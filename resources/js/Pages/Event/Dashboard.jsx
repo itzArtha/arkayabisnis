@@ -1,8 +1,5 @@
 import {Button} from 'primereact/button';
-import {Chart} from 'primereact/chart';
-import {Menu} from 'primereact/menu';
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {LayoutContext} from '@/Layouts/layout/context/layoutcontext';
 import Layout from "@/Layouts/layout/layout.jsx";
 import DashboardInfoCard from "@/Components/DashboardInfoCard.jsx";
 import { Head } from '@inertiajs/react';
@@ -75,6 +72,7 @@ const Dashboard = () => {
                     <div className="card">
                         <h5>Riwayat Penjualan</h5>
                         <DataTable value={products}>
+                            <Column field="code" header="No"></Column>
                             <Column field="code" header="Nama"></Column>
                             <Column field="name" header="Tiket"></Column>
                             <Column field="category" header="Nominal"></Column>

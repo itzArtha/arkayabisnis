@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const ADMIN = 'admin/dashboard';
+    public const ADMIN = 'admin/event/dashboard';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -37,9 +37,9 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
                 
             Route::middleware('web')
-            ->prefix('admin')
+            ->prefix('admin/event')
             ->name('admin.')
-            ->group(base_path('routes/admin.php'));
+            ->group(base_path('routes/event/admin.php'));
         });
     }
 }

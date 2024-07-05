@@ -25,7 +25,7 @@ export default function Login({status, canResetPassword}) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('admin.login'));
+        post(route('login'));
     };
 
     function setChecked(checked) {
@@ -43,7 +43,7 @@ export default function Login({status, canResetPassword}) {
                     <div className="text-center mb-5">
                         <div className="text-900 text-3xl font-medium mb-3">Selamat datang</div>
                         <span className="text-600 font-medium line-height-3">Gak punya akun?</span>
-                        <Link  href={route('admin.register')} className="font-medium no-underline ml-1 text-blue-500 cursor-pointer">Buat dulu yuk!</Link>
+                        <Link  href={route('register')} className="font-medium no-underline ml-1 text-blue-500 cursor-pointer">Buat dulu yuk!</Link>
                     </div>
                     <form onSubmit={submit}>
                         <div>
@@ -79,7 +79,7 @@ export default function Login({status, canResetPassword}) {
                                 </div>
 
                                 <Link
-                                        href={route('admin.password.request')}
+                                        href={route('password.request')}
                                         className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
                                     >
                                         Lupa password?

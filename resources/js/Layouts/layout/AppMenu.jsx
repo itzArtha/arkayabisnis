@@ -9,7 +9,7 @@ const AppMenu = () => {
             label: 'Tokoevent',
             items: [
                 { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: route('admin.dashboard') },
-                { label: 'Peserta', value: 120, icon: 'pi pi-fw pi-users', to: route('button') },
+                { label: 'Peserta', value: 120, icon: 'pi pi-fw pi-users', to: route('admin.participants') },
                 { label: 'OTS System', icon: 'pi pi-fw pi-dollar', to: route('button') },
                 { label: 'Keuangan', icon: 'pi pi-fw pi-credit-card', to: route('button') },
                 { label: 'Pengaturan Event', icon: 'pi pi-fw pi-cog', to: route('button') },

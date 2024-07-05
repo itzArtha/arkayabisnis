@@ -7,8 +7,12 @@ use Inertia\Inertia;
 
 Route::middleware('auth')->group(function () {    
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return Inertia::render('Event/Dashboard');
     })->name('dashboard');
+    
+    Route::get('/participants', function () {
+        return Inertia::render('Event/Participants');
+    })->name('participants');
 
     Route::prefix('profile')->as('profile.')->group(function() {
         Route::get('/', [ProfileController::class, 'edit'])->name('edit');
@@ -16,5 +20,3 @@ Route::middleware('auth')->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('destroy');
     });
 });
-
-require __DIR__.'/auth.php';

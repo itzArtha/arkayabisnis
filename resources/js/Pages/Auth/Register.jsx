@@ -26,7 +26,7 @@ export default function Register() {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('admin.register'));
+        post(route('register'));
     };
 
     return (
@@ -87,7 +87,7 @@ export default function Register() {
 
                             <div className="flex align-items-center justify-content-end mb-4">
                                 <Link
-                                    href={route('admin.login')}
+                                    href={route('login')}
                                     className=""
                                 >
                                     Udah punya akun?
