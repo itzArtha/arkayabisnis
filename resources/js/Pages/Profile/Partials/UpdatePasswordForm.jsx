@@ -20,20 +20,9 @@ export default function UpdatePasswordForm({ className = '' }) {
     const updatePassword = (e) => {
         e.preventDefault();
 
-        put(route('password.update'), {
+        put(route('admin.password.update'), {
             preserveScroll: true,
             onSuccess: () => reset(),
-            // onError: (errors) => {
-            //     if (errors.password) {
-            //         reset('password', 'password_confirmation');
-            //         passwordInput.current.focus();
-            //     }
-            //
-            //     if (errors.current_password) {
-            //         reset('current_password');
-            //         currentPasswordInput.current.focus();
-            //     }
-            // },
         });
     };
 

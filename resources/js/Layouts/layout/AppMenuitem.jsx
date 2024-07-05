@@ -4,6 +4,7 @@ import React, { useEffect, useContext } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { MenuContext } from './context/menucontext';
 import {Link} from "@inertiajs/react";
+import { Badge } from 'primereact/badge';
 
 
 const AppMenuitem = (props) => {
@@ -60,20 +61,20 @@ const AppMenuitem = (props) => {
                 <a href={item.url} onClick={(e) => itemClick(e)} className={classNames(item.class, 'p-ripple')} target={item.target} tabIndex={0}>
                     <i className={classNames('layout-menuitem-icon', item.icon)}></i>
                     <span className="layout-menuitem-text">{item.label}</span>
+                    {item.value ? <Badge value={item.value} severity="warning" className="ml-2"></Badge> : null}
                     {item.items && <i className="pi pi-fw pi-angle-down layout-submenu-toggler"></i>}
                     <Ripple />
                 </a>
             ) : null}
-
             {item.to && !item.items && item.visible !== false ? (
                 <Link href={item.to} replace={item.replaceUrl} target={item.target} onClick={(e) => itemClick(e)} className={classNames(item.class, 'p-ripple', { 'active-route': isActiveRoute })} tabIndex={0}>
                     <i className={classNames('layout-menuitem-icon', item.icon)}></i>
                     <span className="layout-menuitem-text">{item.label}</span>
+                    {item.value ? <Badge value={item.value} severity="warning" className="ml-2"></Badge> : null}
                     {item.items && <i className="pi pi-fw pi-angle-down layout-submenu-toggler"></i>}
                     <Ripple />
                 </Link>
             ) : null}
-
             {subMenu}
         </li>
     );
