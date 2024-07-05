@@ -63,10 +63,11 @@ const Dashboard = () => {
                             </div>
                         </div>
                         <div className="mt-4 gap-2 grid">
-                        <PrimaryButton>Lihat Penjualan</PrimaryButton>
-                        <Button label="Edit" severity="warning" outlined />
+                            <span className="p-buttonset flex w-full">
+                                <PrimaryButton className="w-full justify-content-center" outlined>Lihat Penjualan</PrimaryButton>
+                                <Button icon="pi pi-file-edit" severity="warning"></Button>
+                            </span>
                         </div>
-               
                 </Card>
                 </div>
                 </div>
