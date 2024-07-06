@@ -10,7 +10,7 @@ import {Toolbar} from "primereact/toolbar";
 import moment from "moment";
 import {Tag} from "primereact/tag";
 
-export default function Welcome({ events }) {
+export default function Undangan({ events }) {
 
     const leftToolbarTemplate = () => {
         return <>
@@ -20,7 +20,9 @@ export default function Welcome({ events }) {
 
     const rightToolbarTemplate = () => {
         return <>
-            <PrimaryButton icon={"pi pi-plus"} />
+            <Link href={route('undangan.create')}>
+                <PrimaryButton icon={"pi pi-plus"} />
+            </Link>
         </>
     }
 
