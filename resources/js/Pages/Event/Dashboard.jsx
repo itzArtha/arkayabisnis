@@ -61,7 +61,8 @@ const Dashboard = () => {
                         </div>
                         <div className="mt-4 gap-2 grid">
                             <span className="p-buttonset flex w-full">
-                                <PrimaryButton className="w-full justify-content-center" outlined>Lihat Penjualan</PrimaryButton>
+                                <PrimaryButton className="w-full justify-content-center" outlined>Lihat Preview</PrimaryButton>
+                                <Button icon="pi pi-credit-card" severity="warning" outlined></Button>
                                 <Button icon="pi pi-file-edit" severity="warning"></Button>
                             </span>
                         </div>
