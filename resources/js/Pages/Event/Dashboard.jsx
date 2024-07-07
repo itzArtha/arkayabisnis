@@ -36,7 +36,7 @@ const Dashboard = () => {
                                    iconColor="cyan"
                                    descriptionText="daripada kemarin">
                 </DashboardInfoCard>
-                <DashboardInfoCard title="Pengunjung" value="152"
+                <DashboardInfoCard title="Peserta" value="120"
                                    descriptionValue="+85"
                                    icon="users"
                                    iconColor="purple"
@@ -47,7 +47,7 @@ const Dashboard = () => {
                 <div className="card">
                 <h5>Event Preview</h5>
                 <Card title="Kramat Unmas" subTitle="15 Apr 2023   19.00 - 22.00" header={<img alt="Event" src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/organizations/1690/events/JgV1lvaoSQEPyDC6dBP7z4PM03YP60oI8fd8sQNm.jpg" />}>
-             
+
                         <div className="grid gap-1">
                             <div className="p-col">
                                 <Badge value="Live" severity="success" />

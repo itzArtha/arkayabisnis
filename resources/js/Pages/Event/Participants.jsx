@@ -1,12 +1,11 @@
 import { Link, Head } from '@inertiajs/react';
-import {LayoutContext, LayoutProvider} from "@/Layouts/layout/context/layoutcontext.jsx";
 import React, {useContext} from "react";
 import Layout from '@/Layouts/layout/layout';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 
-export default function Welcome({ auth }) {
+export default function Participants({ auth }) {
     const paginatorRight = <Button type="button" icon="pi pi-download" text />;
     return (
         <>
