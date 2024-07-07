@@ -3,18 +3,28 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import Layout from "@/Layouts/layout/layout.jsx";
 import DashboardInfoCard from "@/Components/DashboardInfoCard.jsx";
 import { Head } from '@inertiajs/react';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
 import { Badge } from 'primereact/badge';
 import PrimaryButton from '@/Components/PrimaryButton';
+import LineChart from "@/Components/LineChart.jsx";
+import {Messages} from "primereact/messages";
 
 const Dashboard = () => {
-    const [products, setProducts] = useState([]);
+    const msgs = useRef(null);
+
+    useEffect(() => {
+        if (msgs.current) {
+            msgs.current.clear();
+            msgs.current.show([
+                { sticky: true, severity: 'warn', summary: 'Perlu Dokumen!', detail: 'Event kamu perlu dokumen pendukung untuk proses verifikasi', closable: false }
+            ]);
+        }
+    });
 
     return (
         <Layout>
             <Head title="Dashboard" />
+            <Messages ref={msgs} />
             <div className="grid">
                 <DashboardInfoCard title="Tiket"
                                    value="2"
@@ -30,7 +40,7 @@ const Dashboard = () => {
                                    descriptionValue="%52+"
                                    descriptionText="daripada kemarin">
                 </DashboardInfoCard>
-                <DashboardInfoCard title="Transaksi" value="28.441"
+                <DashboardInfoCard title="Pengunjung" value="28.441"
                                    descriptionValue="+520"
                                    icon="chart-line"
                                    iconColor="cyan"
@@ -71,15 +81,8 @@ const Dashboard = () => {
                 </div>
                 <div className="col-12 xl:col-8">
                     <div className="card">
-                        <h5>Riwayat Penjualan</h5>
-                        <DataTable value={products}>
-                            <Column field="code" header="No"></Column>
-                            <Column field="code" header="Nama"></Column>
-                            <Column field="name" header="Tiket"></Column>
-                            <Column field="category" header="Nominal"></Column>
-                            <Column field="category" header="Status"></Column>
-                            <Column field="quantity" header="Tanggal"></Column>
-                        </DataTable>
+                        <h5>Pengunjung vs Transaksi</h5>
+                        <LineChart className={"h-12"} type="line" datasets={[]} />
                     </div>
                 </div>
             </div>

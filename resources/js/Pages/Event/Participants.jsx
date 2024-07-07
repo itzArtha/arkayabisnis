@@ -7,6 +7,7 @@ import { Button } from 'primereact/button';
 
 export default function Participants({ auth }) {
     const paginatorRight = <Button type="button" icon="pi pi-download" text />;
+
     return (
         <>
             <Layout>

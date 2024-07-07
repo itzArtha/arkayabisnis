@@ -1,74 +1,23 @@
 import { Link, Head } from '@inertiajs/react';
-import {LayoutContext, LayoutProvider} from "@/Layouts/layout/context/layoutcontext.jsx";
 import React, {useContext, useEffect, useState} from "react";
 import Layout from '@/Layouts/layout/layout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {Column} from "primereact/column";
 import {DataTable} from "primereact/datatable";
 import {Button} from "primereact/button";
-import { Chart } from 'primereact/chart';
+import LineChart from "@/Components/LineChart.jsx";
+import {Dialog} from "primereact/dialog";
+import {InputNumber} from "primereact/inputnumber";
+import {InputText} from "primereact/inputtext";
 
 export default function Welcome({ auth }) {
-    const [chartData, setChartData] = useState({});
-    const [chartOptions, setChartOptions] = useState({});
-
-    useEffect(() => {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-        const data = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    borderColor: documentStyle.getPropertyValue('--blue-500'),
-                    tension: 0.4
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                    fill: false,
-                    borderColor: documentStyle.getPropertyValue('--pink-500'),
-                    tension: 0.4
-                }
-            ]
-        };
-        const options = {
-            maintainAspectRatio: false,
-            aspectRatio: 0.6,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder
-                    }
-                }
-            }
-        };
-
-        setChartData(data);
-        setChartOptions(options);
-    }, []);
+    const [visible, setVisible] = useState(false);
+    const footerContent = (
+        <div>
+            <Button severity={"warning"} label="Batal" icon="pi pi-times" onClick={() => setVisible(false)} className="p-button-text" />
+            <Button severity={"warning"} label="Kirim" icon="pi pi-arrow-right" iconPos={"right"} onClick={() => setVisible(false)} autoFocus />
+        </div>
+    );
 
     return (
         <>
@@ -92,7 +41,7 @@ export default function Welcome({ auth }) {
                                 <div className="flex align-items-center justify-content-between"><span
                                     className="text-sm font-light">Penarikan terakhir: Rp1.000.000</span><span
                                     className="font-medium text-lg">
-                                    <Button className={"text-white"} icon={"pi pi-arrow-down"} rounded outlined />
+                                    <Button onClick={() => setVisible(true)} severity={"warning"} className={"text-yellow-500 bg-white"} icon={"pi pi-arrow-down"} rounded outlined />
                                 </span></div>
                             </div>
                         </div>
@@ -107,14 +56,14 @@ export default function Welcome({ auth }) {
                             <div className="flex align-items-center justify-content-between"><span
                                 className="text-900 text-lg">**** **** 0060</span><span
                                 className="text-600 font-medium text-lg">
-                                <PrimaryButton icon={"pi pi-pencil"} rounded outlined />
+                                <PrimaryButton icon={"pi pi-pencil"} rounded />
                             </span></div>
                         </div>
                     </div>
                     <div className={"col-12"}>
                         <div className="card">
                             <div className="text-900 text-xl font-semibold">Realita vs Target</div>
-                            <Chart className={"h-12"} type="line" data={chartData} options={chartOptions} />
+                            <LineChart className={"h-12"} type="line" datasets={[]} />
                         </div>
                     </div>
                     <div className="col-12 xl:col-8">
@@ -145,6 +94,24 @@ export default function Welcome({ auth }) {
                         </div>
                     </div>
                 </div>
+                <Dialog header="Tarik Dana" position={"bottom"} style={{ width: '25vw' }} breakpoints={{ '960px': '50vw', '641px': '100vw' }} visible={visible} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent} draggable={false} resizable={false}>
+                    <div className="mb-3">
+                        <label htmlFor="currency-id" className="block text-900 font-medium mb-2">Tujuan</label>
+                        <InputText inputId={"to"} disabled className={"w-full"} value={"*** *** 0060 - I KM TRIYANA ARTHA P"} />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="currency-id" className="block text-900 font-medium mb-2">Total</label>
+                        <InputNumber className={"w-full"} inputId="currency-id" mode="currency" currency="IDR" locale="id-ID" />
+                    </div>
+                    <div className="mb-3 text-right">
+                        <div>
+                            <small>Biaya kirim: <b className={"text-red-500"}>-Rp25.000</b></small>
+                        </div>
+                        <div>
+                            <small>Jumlah yang diterima: <b className={"text-green-500 animate-pulse"}>Rp120.000</b></small>
+                        </div>
+                    </div>
+                </Dialog>
             </Layout>
         </>
     );
