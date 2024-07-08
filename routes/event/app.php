@@ -14,6 +14,10 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Event/Participants');
     })->name('participants.index');
 
+    Route::get('/ots-system', function () {
+        return Inertia::render('Event/OtsSystem');
+    })->name('ots.index');
+
     Route::get('/finance', function () {
         return Inertia::render('Event/Finance');
     })->name('finance.index');
