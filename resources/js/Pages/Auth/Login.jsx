@@ -8,6 +8,7 @@ import {Head, Link, useForm} from '@inertiajs/react';
 import {InputText} from "primereact/inputtext";
 import {Checkbox} from "primereact/checkbox";
 import {Button} from "primereact/button";
+import ApplicationLogo from '@/Components/ApplicationLogo';
 
 export default function Login({status, canResetPassword}) {
     const {data, setData, post, processing, errors, reset} = useForm({
@@ -39,11 +40,14 @@ export default function Login({status, canResetPassword}) {
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
             <div className="flex align-items-center justify-content-center flex-column">
-                <div className="surface-card p-6 sm:p-4 shadow-2 border-round w-full lg:w-4">
+                <div className="surface-card md:p-6 p-4 shadow-2 border-round w-full lg:w-4">
                     <div className="text-center mb-5">
+                        <div className="shrink-0 flex align-items-center justify-content-center mb-4">
+                            <ApplicationLogo className="block md:h-2 md:w-2 w-4 h-4 fill-current text-gray-800" />
+                        </div>
                         <div className="text-900 text-3xl font-medium mb-3">Selamat datang</div>
                         <span className="text-600 font-medium line-height-3">Gak punya akun?</span>
-                        <Link  href={route('register')} className="font-medium no-underline ml-1 text-blue-500 cursor-pointer">Buat dulu yuk!</Link>
+                        <Link href={route('register')} className="font-medium no-underline ml-1 text-blue-500 cursor-pointer">Buat dulu yuk!</Link>
                     </div>
                     <form onSubmit={submit}>
                         <div>
@@ -86,7 +90,10 @@ export default function Login({status, canResetPassword}) {
                                     </Link>
                             </div>
 
-                            <PrimaryButton label="Sign In" className="w-full" disabled={processing}/>
+                            <div className='grid gap-2'>
+                                <PrimaryButton label="Masuk" className="w-full" disabled={processing}/>
+                                <Button label='Masuk Dengan Google' className='w-full' icon="pi pi-google" outlined /> 
+                            </div>
                         </div>
                     </form>
                 </div>
