@@ -91,8 +91,8 @@ export default function Login({status, canResetPassword, heroImage}) {
                                         </Link>
                                     </div>
 
-                                    <div className='grid gap-2'>
-                                        <PrimaryButton label="Masuk" icon="pi pi-sign-in" className="w-full" disabled={processing}/>
+                                    <div>
+                                        <PrimaryButton label="Masuk" icon="pi pi-sign-in" className="w-full mb-2" disabled={processing}/>
                                         <Button label='Masuk Dengan Google' className='w-full' icon="pi pi-google" outlined />
                                     </div>
                                 </div>
