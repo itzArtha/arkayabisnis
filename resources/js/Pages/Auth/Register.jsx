@@ -9,11 +9,12 @@ import CreateAccount from "@/Pages/Auth/Components/CreateAccount";
 export default function Register({heroImage}) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
+        pic_name: '',
         event_title: '',
         whatsapp: '',
+        terms: false,
         email: '',
-        password: '',
-        password_confirmation: '',
+        password: ''
     });
 
     useEffect(() => {
@@ -38,14 +39,14 @@ export default function Register({heroImage}) {
                 </div>
                 <div className="col-12 md:col-4 p-4 md:h-screen h-full">
                     <section>
-                        <div className="mb-5">
+                        <div className="mb-2">
                             <div className="shrink-0 mb-4">
                                 <ApplicationLogo className="block w-4 h-4 fill-current text-gray-800" />
                             </div>
                         </div>
-                        <div className={"mt-8 px-4 justify-content-center items-center"}>
-                            {/*<CreateAccount data={data} setData={setData} errors={errors} processing={processing} />*/}
-                            <CreateEvent data={data} setData={setData} errors={errors} processing={processing} />
+                        <div className={"mt-6 px-4 justify-content-center items-center"}>
+                            <CreateAccount data={data} setData={setData} errors={errors} processing={processing} />
+                            {/*<CreateEvent data={data} setData={setData} errors={errors} processing={processing} />*/}
                         </div>
                     </section>
                 </div>

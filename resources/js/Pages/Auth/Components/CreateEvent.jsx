@@ -3,10 +3,7 @@ import {InputIcon} from "primereact/inputicon";
 import {InputText} from "primereact/inputtext";
 import InputError from "@/Components/InputError.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import {Button} from "primereact/button";
-import {Link} from "@inertiajs/react";
-import {InputNumber} from "primereact/inputnumber";
-import {InputMask} from "primereact/inputmask";
+import {Checkbox} from "primereact/checkbox";
 
 export default function CreateEvent({data, errors, setData, processing})
 {
@@ -29,7 +26,7 @@ export default function CreateEvent({data, errors, setData, processing})
                                 type="text"
                                 className="w-full pl-5"
                                 value={data.event_title}
-                                placeholder={"Mis. Tokoevent Festival"}
+                                placeholder={"Tokoevent Festival"}
                                 onChange={(e) => setData('event_title', e.target.value)}
                             />
                         </IconField>
@@ -44,6 +41,7 @@ export default function CreateEvent({data, errors, setData, processing})
                                 type="text"
                                 className="w-full pl-5"
                                 value={data.name}
+                                placeholder={"Elon Musk"}
                                 onChange={(e) => setData('name', e.target.value)}
                             />
                         </IconField>
@@ -53,12 +51,13 @@ export default function CreateEvent({data, errors, setData, processing})
                         <label htmlFor="whatsapp" className="block text-900 font-medium mb-2">No. WA</label>
                         <IconField iconPosition="left">
                             <InputIcon className="pi pi-whatsapp"> </InputIcon>
-                            <InputMask
+                            <InputText
                                 id="whatsapp"
                                 className="w-full pl-5"
-                                mask={"+62 9999 9999 999"}
-                                placeholder={"+62 8123 4567 890"}
+                                placeholder={"081234567890"}
+                                maxLength={13}
                                 value={data.whatsapp}
+                                keyfilter={"pnum"}
                                 onChange={(e) => setData('whatsapp', e.target.value)}
                             />
                         </IconField>
