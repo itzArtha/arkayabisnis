@@ -3,9 +3,10 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import {Head, Link, useForm} from '@inertiajs/react';
 import {InputText} from "primereact/inputtext";
-import {Checkbox} from "primereact/checkbox";
 import {Button} from "primereact/button";
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import {IconField} from "primereact/iconfield";
+import {InputIcon} from "primereact/inputicon";
 
 export default function Login({status, canResetPassword, heroImage}) {
     const {data, setData, post, processing, errors, reset} = useForm({
@@ -37,8 +38,8 @@ export default function Login({status, canResetPassword, heroImage}) {
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
             <div className="grid grid-nogutter surface-0 text-800">
-                <div className="col-12 md:col-8 overflow-hidden hidden md:block">
-                    <img src={heroImage} alt="hero-1" className="h-screen w-full object-cover" style={{objectFit: "cover"}} />
+                <div className="col-12 md:col-8 overflow-hidden hidden md:block h-screen">
+                    <img src={heroImage} alt="hero-1" className="h-full w-full object-cover" style={{objectFit: "cover"}} />
                 </div>
                 <div className="col-12 md:col-4 p-4 h-screen">
                     <section>
@@ -54,24 +55,30 @@ export default function Login({status, canResetPassword, heroImage}) {
                                 <div>
                                     <div className="mb-3">
                                         <label htmlFor="email" className="block text-900 font-medium mb-2">Email</label>
-                                        <InputText
-                                            id="email"
-                                            type="text"
-                                            className="w-full"
-                                            value={data.email}
-                                            onChange={(e) => setData('email', e.target.value)}
-                                        />
+                                        <IconField iconPosition="left">
+                                            <InputIcon className="pi pi-user"> </InputIcon>
+                                            <InputText
+                                                id="email"
+                                                type="text"
+                                                className="w-full pl-5"
+                                                value={data.email}
+                                                onChange={(e) => setData('email', e.target.value)}
+                                            />
+                                        </IconField>
                                         <InputError message={errors.email} className=""/>
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="password" className="block text-900 font-medium mb-2">Password</label>
-                                        <InputText
-                                            id="password"
-                                            type="password"
-                                            className="w-full"
-                                            value={data.password}
-                                            onChange={(e) => setData('password', e.target.value)}
-                                        />
+                                        <IconField iconPosition="left">
+                                            <InputIcon className="pi pi-lock"> </InputIcon>
+                                            <InputText
+                                                id="password"
+                                                type="password"
+                                                className="w-full pl-5"
+                                                value={data.password}
+                                                onChange={(e) => setData('password', e.target.value)}
+                                            />
+                                        </IconField>
                                         <InputError message={errors.password} className=""/>
                                     </div>
 
