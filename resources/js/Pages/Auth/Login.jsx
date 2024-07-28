@@ -49,7 +49,7 @@ export default function Login({status, canResetPassword, heroImage}) {
                             </div>
                         </div>
                         <div className={"mt-8 px-4 justify-content-center items-center"}>
-                            <div className="text-900 text-3xl font-medium mb-1">Selamat datang</div>
+                            <div className="text-900 text-3xl font-medium mb-1">Halo, apa kabar? 👋🏻</div>
                             <p className={"text-400 mb-4"}>Login di bawah ini untuk akses akun mu</p>
                             <form onSubmit={submit}>
                                 <div>
