@@ -4,17 +4,47 @@ import {InputText} from "primereact/inputtext";
 import InputError from "@/Components/InputError.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {Button} from "primereact/button";
-import {Link} from "@inertiajs/react";
-import {Checkbox} from "primereact/checkbox";
+import {Head, Link, useForm} from "@inertiajs/react";
+import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
+import GuestLayout from '@/Layouts/GuestLayout';
+import {useEffect} from "react";
 
-export default function CreateAccount({data, errors, setData, processing})
+export default function CreateAccount({heroImage})
 {
-    const submit = () => {
-        console.log('ok')
-    }
+    const { data, setData, post, processing, errors, reset } = useForm({
+        name: '',
+        email: '',
+        password: ''
+    });
+
+    useEffect(() => {
+        return () => {
+            reset('password');
+        };
+    }, []);
+
+    const submit = (e) => {
+        e.preventDefault();
+
+        post(route('register'));
+    };
 
     return(
-        <>
+        <GuestLayout>
+            <Head title="Register" />
+
+            <div className="grid grid-nogutter surface-0 text-800">
+                <div className="col-12 md:col-8 overflow-hidden hidden md:block h-screen">
+                    <img src={heroImage} alt="hero-1" className="h-full w-full object-cover" style={{objectFit: "cover"}} />
+                </div>
+                <div className="col-12 md:col-4 p-4 md:h-screen h-full">
+                    <section>
+                        <div className="mb-2">
+                            <div className="shrink-0 mb-4">
+                                <ApplicationLogo className="block w-4 h-4 fill-current text-gray-800" />
+                            </div>
+                        </div>
+                        <div className={"mt-6 px-4 justify-content-center items-center"}>
             <div className="text-900 text-3xl font-medium mb-1">Selamat datang 🙌🏻</div>
             <p className={"text-400 mb-4"}>Kamu harus punya akun untuk menjual tiket</p>
             <form onSubmit={submit}>
@@ -54,8 +84,8 @@ export default function CreateAccount({data, errors, setData, processing})
                         <IconField iconPosition="left">
                             <InputIcon className="pi pi-lock"> </InputIcon>
                             <InputText
-                                id="name"
-                                type="text"
+                                id="password"
+                                type="password"
                                 className="w-full pl-5"
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
@@ -78,6 +108,10 @@ export default function CreateAccount({data, errors, setData, processing})
                 <span className="text-600 font-medium line-height-3">Udah punya akun?</span>
                 <Link href={route('login')} className="font-medium ml-1 text-900 underline cursor-pointer">Login di sini yuk!</Link>
             </div>
-        </>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </GuestLayout>
     )
 }

@@ -3,17 +3,42 @@ import {InputIcon} from "primereact/inputicon";
 import {InputText} from "primereact/inputtext";
 import InputError from "@/Components/InputError.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import {Checkbox} from "primereact/checkbox";
+import GuestLayout from '@/Layouts/GuestLayout';
+import {Head, useForm} from "@inertiajs/react";
+import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
+import {useEffect} from "react";
 
-export default function CreateEvent({data, errors, setData, processing})
+export default function CreateEvent({auth, heroImage})
 {
-    const submit = () => {
-        console.log('ok')
-    }
+    const { data, setData, post, processing, errors, reset } = useForm({
+        event_title: '',
+        event_pic: '',
+        whatsapp: ''
+    });
+
+    const submit = (e) => {
+        e.preventDefault();
+
+        post(route('register'));
+    };
 
     return(
-        <>
-            <div className="text-900 text-3xl font-medium mb-1">Halo {data.name}, <br/> buat event yuk! 🙌🏻</div>
+        <GuestLayout>
+            <Head title="Buat Event" />
+
+            <div className="grid grid-nogutter surface-0 text-800">
+                <div className="col-12 md:col-8 overflow-hidden hidden md:block h-screen">
+                    <img src={heroImage} alt="hero-1" className="h-full w-full object-cover" style={{objectFit: "cover"}} />
+                </div>
+                <div className="col-12 md:col-4 p-4 md:h-screen h-full">
+                    <section>
+                        <div className="mb-2">
+                            <div className="shrink-0 mb-4">
+                                <ApplicationLogo className="block w-4 h-4 fill-current text-gray-800" />
+                            </div>
+                        </div>
+                        <div className={"mt-6 px-4 justify-content-center items-center"}>
+            <div className="text-900 text-3xl font-medium mb-1">Halo {auth.user.name}, <br/> buat event yuk! 🙌🏻</div>
             <p className={"text-400 mb-4"}>Buat event mu bersama kami untuk penjualan tiket yang lebih mudah</p>
             <form onSubmit={submit}>
                 <div>
@@ -68,6 +93,10 @@ export default function CreateEvent({data, errors, setData, processing})
                     </div>
                 </div>
             </form>
-        </>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </GuestLayout>
     )
 }
