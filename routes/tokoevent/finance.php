@@ -8,4 +8,4 @@ use Inertia\Inertia;
 
 Route::get('/finance', function () {
     return Inertia::render('Event/Finance');
-})->name('finance.index');
+})->name('index');

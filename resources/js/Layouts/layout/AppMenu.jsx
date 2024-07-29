@@ -8,11 +8,11 @@ const AppMenu = () => {
         {
             label: 'Tokoevent',
             items: [
-                { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: route('event.dashboard') },
-                { label: 'Peserta', value: 120, icon: 'pi pi-fw pi-users', to: route('event.participants.index') },
-                { label: 'OTS System', icon: 'pi pi-fw pi-dollar', to: route('event.ots.index') },
-                { label: 'Keuangan', icon: 'pi pi-fw pi-credit-card', to: route('event.finance.index') },
-                { label: 'Pengaturan Event', icon: 'pi pi-fw pi-cog', to: route('button') },
+                { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: route('dashboard') },
+                { label: 'Peserta', value: 120, icon: 'pi pi-fw pi-users', to: route('participants.index') },
+                { label: 'OTS System', icon: 'pi pi-fw pi-dollar', to: route('ots.index') },
+                { label: 'Keuangan', icon: 'pi pi-fw pi-credit-card', to: route('finance.index') },
+                // { label: 'Pengaturan Event', icon: 'pi pi-fw pi-cog', to: route('button') },
             ]
         },
         {
@@ -20,9 +20,9 @@ const AppMenu = () => {
             items: [
                 { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: route('undangan.dashboard') },
                 { label: 'Undangan', value: 120, icon: 'pi pi-fw pi-calendar', to: route('undangan.index') },
-                { label: 'Template', value: 5, icon: 'pi pi-fw pi-desktop', to: route('button') },
-                { label: 'Referral', icon: 'pi pi-fw pi-dollar', to: route('button') },
-                { label: 'Keuangan', icon: 'pi pi-fw pi-credit-card', to: route('button') }
+                // { label: 'Template', value: 5, icon: 'pi pi-fw pi-desktop', to: route('button') },
+                // { label: 'Referral', icon: 'pi pi-fw pi-dollar', to: route('button') },
+                // { label: 'Keuangan', icon: 'pi pi-fw pi-credit-card', to: route('button') }
             ]
         },
     ];

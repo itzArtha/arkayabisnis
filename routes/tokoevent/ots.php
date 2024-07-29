@@ -8,4 +8,4 @@ use Inertia\Inertia;
 
 Route::get('/ots-system', function () {
     return Inertia::render('Event/OtsSystem');
-})->name('ots.index');
+})->name('index');

@@ -33,14 +33,14 @@ const Dashboard = () => {
                                    descriptionValue=""
                                    descriptionText="Tipe tiket yang tersedia">
                 </DashboardInfoCard>
-                <DashboardInfoCard title="Penjualan"
+                <DashboardInfoCard title="Penjualan Harian"
                                    value="Rp2.100.000"
                                    icon="money-bill"
                                    iconColor="orange"
                                    descriptionValue="%52+"
                                    descriptionText="daripada kemarin">
                 </DashboardInfoCard>
-                <DashboardInfoCard title="Pengunjung" value="28.441"
+                <DashboardInfoCard title="Pengunjung Harian" value="28.441"
                                    descriptionValue="+520"
                                    icon="chart-line"
                                    iconColor="cyan"
@@ -71,9 +71,8 @@ const Dashboard = () => {
                         </div>
                         <div className="mt-4 gap-2 grid">
                             <span className="p-buttonset flex w-full">
-                                <PrimaryButton className="w-full justify-content-center" outlined>Lihat Preview</PrimaryButton>
-                                <Button icon="pi pi-credit-card" severity="warning" outlined></Button>
-                                <Button icon="pi pi-file-edit" severity="warning"></Button>
+                                <PrimaryButton className="w-full justify-content-center">Edit Event</PrimaryButton>
+                                <Button icon="pi pi-eye" severity="warning"></Button>
                             </span>
                         </div>
                 </Card>

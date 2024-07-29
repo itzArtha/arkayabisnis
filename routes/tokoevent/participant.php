@@ -7,4 +7,4 @@ use Inertia\Inertia;
 
 Route::get('/participants', function () {
     return Inertia::render('Event/Participants');
-})->name('participants.index');
+})->name('index');

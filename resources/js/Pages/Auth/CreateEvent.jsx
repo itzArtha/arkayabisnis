@@ -4,22 +4,21 @@ import {InputText} from "primereact/inputtext";
 import InputError from "@/Components/InputError.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import GuestLayout from '@/Layouts/GuestLayout';
-import {Head, Link, useForm} from "@inertiajs/react";
+import {Head, useForm} from "@inertiajs/react";
 import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
-import {useEffect} from "react";
 
 export default function CreateEvent({auth, heroImage})
 {
     const { data, setData, post, processing, errors, reset } = useForm({
-        event_title: '',
-        event_pic: '',
+        title: '',
+        pic_name: '',
         whatsapp: ''
     });
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('register'));
+        post(route('event.store'));
     };
 
     return(
@@ -50,12 +49,12 @@ export default function CreateEvent({auth, heroImage})
                                 id="event_title"
                                 type="text"
                                 className="w-full pl-5"
-                                value={data.event_title}
+                                value={data.title}
                                 placeholder={"Tokoevent Festival"}
-                                onChange={(e) => setData('event_title', e.target.value)}
+                                onChange={(e) => setData('title', e.target.value)}
                             />
                         </IconField>
-                        <InputError message={errors.event_title} className=""/>
+                        <InputError message={errors.title} className=""/>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="name" className="block text-900 font-medium mb-2">Nama Penanggung Jawab</label>
@@ -65,12 +64,12 @@ export default function CreateEvent({auth, heroImage})
                                 id="name"
                                 type="text"
                                 className="w-full pl-5"
-                                value={data.name}
+                                value={data.pic_name}
                                 placeholder={"Elon Musk"}
-                                onChange={(e) => setData('name', e.target.value)}
+                                onChange={(e) => setData('pic_name', e.target.value)}
                             />
                         </IconField>
-                        <InputError message={errors.name} className=""/>
+                        <InputError message={errors.pic_name} className=""/>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="whatsapp" className="block text-900 font-medium mb-2">No. WA</label>
@@ -86,7 +85,7 @@ export default function CreateEvent({auth, heroImage})
                                 onChange={(e) => setData('whatsapp', e.target.value)}
                             />
                         </IconField>
-                        <InputError message={errors.name} className=""/>
+                        <InputError message={errors.whatsapp} className=""/>
                     </div>
                     <div className='mt-6'>
                         <PrimaryButton label="Buat Event" icon={"pi pi-verified"} className="w-full mb-2" disabled={processing}/>
