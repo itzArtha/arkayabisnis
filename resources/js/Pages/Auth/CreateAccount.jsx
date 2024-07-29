@@ -37,7 +37,7 @@ export default function CreateAccount({heroImage})
                 <div className="col-12 md:col-8 overflow-hidden hidden md:block h-screen">
                     <img src={heroImage} alt="hero-1" className="h-full w-full object-cover" style={{objectFit: "cover"}} />
                 </div>
-                <div className="col-12 md:col-4 p-4 md:h-screen h-full">
+                <div className="col-12 md:col-4 p-4 h-screen">
                     <section>
                         <div className="mb-2">
                             <div className="shrink-0 mb-4">

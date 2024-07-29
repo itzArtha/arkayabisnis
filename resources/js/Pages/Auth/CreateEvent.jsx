@@ -4,7 +4,7 @@ import {InputText} from "primereact/inputtext";
 import InputError from "@/Components/InputError.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import GuestLayout from '@/Layouts/GuestLayout';
-import {Head, useForm} from "@inertiajs/react";
+import {Head, Link, useForm} from "@inertiajs/react";
 import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
 import {useEffect} from "react";
 
@@ -30,7 +30,7 @@ export default function CreateEvent({auth, heroImage})
                 <div className="col-12 md:col-8 overflow-hidden hidden md:block h-screen">
                     <img src={heroImage} alt="hero-1" className="h-full w-full object-cover" style={{objectFit: "cover"}} />
                 </div>
-                <div className="col-12 md:col-4 p-4 md:h-screen h-full">
+                <div className="col-12 md:col-4 p-4 h-screen">
                     <section>
                         <div className="mb-2">
                             <div className="shrink-0 mb-4">
@@ -93,6 +93,10 @@ export default function CreateEvent({auth, heroImage})
                     </div>
                 </div>
             </form>
+                            <div className={"mt-4 text-center"}>
+                                <span className="text-600 font-medium line-height-3">Butuh bantuan?</span>
+                                <a target={'_blank'} href={'https://wa.me/6281238169667'} className="font-medium ml-1 text-900 underline cursor-pointer">Hubungi kami</a>
+                            </div>
                         </div>
                     </section>
                 </div>
