@@ -1,10 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Http\Request;
+use App\Actions\Tokoevent\Participant\UI\IndexParticipants;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/participants', function () {
-    return Inertia::render('Event/Participants');
-})->name('index');
+Route::get('/participants', IndexParticipants::class)->name('index');

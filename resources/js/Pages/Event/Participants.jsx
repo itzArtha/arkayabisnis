@@ -4,14 +4,14 @@ import Layout from '@/Layouts/layout/layout';
 import { Button } from 'primereact/button';
 import Table from "@/Components/Table";
 
-export default function Participants({ auth }) {
+export default function Participants({ participants }) {
     return (
         <>
             <Layout>
                 <Head title="Participants" />
                 <div className="card">
                         <h5>Peserta</h5>
-                        <Table />
+                        <Table data={participants.data} />
                     </div>
             </Layout>
         </>

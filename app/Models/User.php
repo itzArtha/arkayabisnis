@@ -115,9 +115,9 @@ class User extends Authenticatable
         return $this->hasOne(Bank::class, 'owner_id');
     }
 
-    public function events()
+    public function event()
     {
-        return $this->hasMany(Event::class, 'organizer_id');
+        return $this->hasOne(Event::class, 'organizer_id');
     }
 
     public function reminders()

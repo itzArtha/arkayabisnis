@@ -91,6 +91,11 @@ class Event extends Model
         }
     }
 
+    public function getBanner()
+    {
+        return $this->banner_url ? $this->banner_url : asset('images/placeholders/banner-event.png');
+    }
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'organizer_id');
@@ -141,7 +146,7 @@ class Event extends Model
         return $this->belongsTo(EventFormat::class, 'format_id');
     }
 
-    public function participant()
+    public function participants()
     {
         return $this->hasMany(Participant::class, 'event_id');
     }

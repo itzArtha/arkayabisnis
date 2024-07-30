@@ -1,15 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Http\Request;
+use App\Actions\Tokoevent\Dashboard\UI\ShowDashboard;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['complete-register'])->group(function () {
-        Route::get('/dashboard', function () {
-            return Inertia::render('Event/Dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', ShowDashboard::class)->name('dashboard');
 
         Route::prefix('profile')->as('profile.')->group(__DIR__ . '/profile.php');
         Route::prefix('finance')->as('finance.')->group(__DIR__ . '/finance.php');

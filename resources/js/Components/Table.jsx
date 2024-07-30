@@ -6,8 +6,7 @@ import { Skeleton } from 'primereact/skeleton';
 import {ColumnGroup} from "primereact/columngroup";
 import {Row} from "primereact/row";
 
-export default function Table() {
-    const [virtualCars, setVirtualCars] = useState([]);
+export default function Table({data}) {
     const [lazyLoading, setLazyLoading] = useState(false);
     let loadLazyTimeout = null;
 
@@ -35,15 +34,16 @@ export default function Table() {
     const headerGroup = (
         <ColumnGroup>
             <Row>
-                <Column header="Kehadiran" colSpan={1} />
+                <Column header="Kehadiran" colSpan={2} />
                 <Column header={"Total: 24"} />
                 <Column header={"Hadir: 10"} />
                 <Column header={"Tidak Hadir: 12"} />
             </Row>
             <Row>
                 <Column header="#" sortable field="no" />
-                <Column header="Tiket" sortable field="ticket" />
-                <Column header="Nama" sortable field="name" />
+                <Column header="Nomor Tiket" sortable field="ticket_number" />
+                <Column header="Nama Tiket" sortable field="ticket_name" />
+                <Column header="Nama Peserta" sortable field="name" />
                 <Column header="Status" sortable field="status" />
             </Row>
         </ColumnGroup>
@@ -51,15 +51,15 @@ export default function Table() {
 
     return (
         <div className="card">
-            <DataTable value={virtualCars} scrollable scrollHeight="400px"
+            <DataTable value={data} scrollable scrollHeight="400px"
                        headerColumnGroup={headerGroup}
                        virtualScrollerOptions={{ lazy: true, onLazyLoad: loadCarsLazy, itemSize: 46, delay: 200, showLoader: true, loading: lazyLoading, loadingTemplate }}
                        tableStyle={{ minWidth: '50rem' }}>
-                <Column field="id" header="Id" style={{ width: '20%' }}></Column>
-                <Column field="vin" header="Vin" style={{ width: '20%' }}></Column>
-                <Column field="year" header="Year" style={{ width: '20%' }}></Column>
-                <Column field="brand" header="Brand" style={{ width: '20%' }}></Column>
-                <Column field="color" header="Color" style={{ width: '20%' }}></Column>
+                <Column header="#" body={(data, options) => options.rowIndex + 1}></Column>
+                <Column header="Nomor Tiket" sortable field="ticket_number" />
+                <Column header="Nama Tiket" sortable field="ticket_name" />
+                <Column header="Nama Peserta" sortable field="name" />
+                <Column header="Status" sortable field="status" />
             </DataTable>
         </div>
     );

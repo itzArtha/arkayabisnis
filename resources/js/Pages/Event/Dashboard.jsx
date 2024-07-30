@@ -3,13 +3,11 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import Layout from "@/Layouts/layout/layout.jsx";
 import DashboardInfoCard from "@/Components/DashboardInfoCard.jsx";
 import { Head } from '@inertiajs/react';
-import { Card } from 'primereact/card';
-import { Badge } from 'primereact/badge';
-import PrimaryButton from '@/Components/PrimaryButton';
 import LineChart from "@/Components/LineChart.jsx";
 import {Messages} from "primereact/messages";
+import EventCard from "@/Components/EventCard.jsx";
 
-const Dashboard = () => {
+const Dashboard = ({event, stats}) => {
     const msgs = useRef(null);
 
     useEffect(() => {
@@ -27,26 +25,25 @@ const Dashboard = () => {
             <Messages ref={msgs} />
             <div className="grid">
                 <DashboardInfoCard title="Tiket"
-                                   value="2"
+                                   value={stats.total_tickets}
                                    icon="ticket"
                                    iconColor="blue"
-                                   descriptionValue=""
                                    descriptionText="Tipe tiket yang tersedia">
                 </DashboardInfoCard>
                 <DashboardInfoCard title="Penjualan Harian"
-                                   value="Rp2.100.000"
+                                   value={stats.daily_sales}
                                    icon="money-bill"
                                    iconColor="orange"
                                    descriptionValue="%52+"
                                    descriptionText="daripada kemarin">
                 </DashboardInfoCard>
-                <DashboardInfoCard title="Pengunjung Harian" value="28.441"
-                                   descriptionValue="+520"
+                <DashboardInfoCard title="Pengunjung Harian" value={stats.daily_visitors}
+                                   descriptionValue={"+0"}
                                    icon="chart-line"
                                    iconColor="cyan"
                                    descriptionText="daripada kemarin">
                 </DashboardInfoCard>
-                <DashboardInfoCard title="Peserta" value="120"
+                <DashboardInfoCard title="Peserta" value={stats.total_participants}
                                    descriptionValue="+85"
                                    icon="users"
                                    iconColor="purple"
@@ -54,29 +51,10 @@ const Dashboard = () => {
                 </DashboardInfoCard>
 
                 <div className="col-12 xl:col-4">
-                <div className="card">
-                <h5>Event Preview</h5>
-                <Card title="Kramat Unmas" subTitle="15 Apr 2023   19.00 - 22.00" header={<img alt="Event" src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/organizations/1690/events/JgV1lvaoSQEPyDC6dBP7z4PM03YP60oI8fd8sQNm.jpg" />}>
-
-                        <div className="grid gap-1">
-                            <div className="p-col">
-                                <Badge value="Live" severity="success" />
-                            </div>
-                            <div className="p-col">
-                                <Badge value="Offline event" severity="warning" />
-                            </div>
-                            <div className="p-col">
-                                <Badge value="Hiburan" severity="info" />
-                            </div>
-                        </div>
-                        <div className="mt-4 gap-2 grid">
-                            <span className="p-buttonset flex w-full">
-                                <PrimaryButton className="w-full justify-content-center">Edit Event</PrimaryButton>
-                                <Button icon="pi pi-eye" severity="warning"></Button>
-                            </span>
-                        </div>
-                </Card>
-                </div>
+                    <div className="card">
+                    <h5>Event Preview</h5>
+                        <EventCard data={event.data} />
+                    </div>
                 </div>
                 <div className="col-12 xl:col-8">
                     <div className="card">

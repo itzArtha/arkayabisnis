@@ -19,7 +19,7 @@ class StoreEvent
         $user = $request->user();
 
         /** @var Event $event */
-        $event = $user->events()->create($request->validated());
+        $event = $user->event()->create($request->validated());
 
         $event->detailIzin()->create([
             'pic_name' => $request->pic_name,
