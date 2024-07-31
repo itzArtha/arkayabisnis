@@ -14,17 +14,7 @@ const AppMenu = () => {
                 { label: 'Keuangan', icon: 'pi pi-fw pi-credit-card', to: route('finance.index') },
                 // { label: 'Pengaturan Event', icon: 'pi pi-fw pi-cog', to: route('button') },
             ]
-        },
-        {
-            label: 'Tokoundangan',
-            items: [
-                { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: route('undangan.dashboard') },
-                { label: 'Undangan', value: 120, icon: 'pi pi-fw pi-calendar', to: route('undangan.index') },
-                // { label: 'Template', value: 5, icon: 'pi pi-fw pi-desktop', to: route('button') },
-                // { label: 'Referral', icon: 'pi pi-fw pi-dollar', to: route('button') },
-                // { label: 'Keuangan', icon: 'pi pi-fw pi-credit-card', to: route('button') }
-            ]
-        },
+        }
     ];
 
     return (
@@ -33,8 +23,6 @@ const AppMenu = () => {
                 {model.map((item, i) => {
                     return !item?.seperator ? <AppMenuitem item={item} root={true} index={i} key={item.label} /> : <li className="menu-separator"></li>;
                 })}
-
-
             </ul>
         </MenuProvider>
     );

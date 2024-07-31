@@ -5,12 +5,12 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {Column} from "primereact/column";
 import {DataTable} from "primereact/datatable";
 import {Button} from "primereact/button";
-import LineChart from "@/Components/LineChart.jsx";
 import {Dialog} from "primereact/dialog";
 import {InputNumber} from "primereact/inputnumber";
 import {InputText} from "primereact/inputtext";
+import currency from "currency.js";
 
-export default function Welcome({ auth }) {
+export default function Welcome({ transactions, withdraws, header }) {
     const [visible, setVisible] = useState(false);
     const footerContent = (
         <div>
@@ -18,6 +18,8 @@ export default function Welcome({ auth }) {
             <Button severity={"warning"} label="Kirim" icon="pi pi-arrow-right" iconPos={"right"} onClick={() => setVisible(false)} autoFocus />
         </div>
     );
+
+    const balance = currency(header.balance, {symbol: 'Rp', separator: '.', precision: 0}).format();
 
     return (
         <>
@@ -37,7 +39,7 @@ export default function Welcome({ auth }) {
                             </svg>
                             <div className="z-2 relative text-white">
                                 <div className="text-xl font-semibold mb-3">Saldo</div>
-                                <div className="text-2xl mb-5 font-bold">Rp150.000.000</div>
+                                <div className="text-2xl mb-5 font-bold">{balance}</div>
                                 <div className="flex align-items-center justify-content-between"><span
                                     className="text-sm font-light">Penarikan terakhir: Rp1.000.000</span><span
                                     className="font-medium text-lg">
@@ -60,35 +62,28 @@ export default function Welcome({ auth }) {
                             </span></div>
                         </div>
                     </div>
-                    <div className={"col-12"}>
-                        <div className="card">
-                            <div className="text-900 text-xl font-semibold">Realita vs Target</div>
-                            <LineChart className={"h-12"} type="line" datasets={[]} />
-                        </div>
-                    </div>
                     <div className="col-12 xl:col-8">
-                    <div className="card">
-                        <div className="text-900 text-xl font-semibold mb-3">Riwayat Pemasukan</div>
-                        <div className={"mt-2"}>
-                            <DataTable value={[]}>
-                                <Column field="code" header="#"></Column>
-                                <Column field="name" header="Nama"></Column>
-                                <Column field="code" header="Jumlah"></Column>
-                                <Column field="code" header="Bank"></Column>
-                                <Column field="category" header="Status"></Column>
-                            </DataTable>
+                        <div className="card">
+                            <div className="text-900 text-xl font-semibold mb-3">Transaksi</div>
+                            <div className={"mt-2"}>
+                                <DataTable value={transactions.data}>
+                                    <Column field="code" header="#"></Column>
+                                    <Column field="name" header="Nama"></Column>
+                                    <Column field="code" header="Jumlah"></Column>
+                                    <Column field="code" header="Bank"></Column>
+                                    <Column field="category" header="Status"></Column>
+                                </DataTable>
+                            </div>
                         </div>
-                    </div>
                     </div>
                     <div className="col-12 xl:col-4">
                         <div className="card">
-                            <div className="text-900 text-xl font-semibold mb-3">Riwayat Penarikan</div>
+                            <div className="text-900 text-xl font-semibold mb-3">Penarikan</div>
                             <div className={"mt-2"}>
-                                <DataTable value={[]}>
-                                    <Column field="code" header="#"></Column>
-                                    <Column field="name" header="Bank"></Column>
-                                    <Column field="code" header="Jumlah"></Column>
-                                    <Column field="category" header="Status"></Column>
+                                <DataTable value={withdraws.data}>
+                                    <Column header="#" body={(data, options) => options.rowIndex + 1}></Column>
+                                    <Column field="amount" header="Jumlah"></Column>
+                                    <Column field="status" header="Status"></Column>
                                 </DataTable>
                             </div>
                         </div>

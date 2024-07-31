@@ -124,4 +124,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Reminder::class, 'user_id');
     }
+
+    public function withdraws()
+    {
+        return $this->hasMany(Withdraw::class, 'user_id');
+    }
 }
