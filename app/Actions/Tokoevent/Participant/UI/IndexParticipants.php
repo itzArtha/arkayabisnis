@@ -8,6 +8,8 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Spatie\QueryBuilder\AllowedFilter;
+use App\Services\QueryBuilder;
 
 class IndexParticipants
 {
@@ -17,7 +19,17 @@ class IndexParticipants
     {
         $event = $request->user()->event;
 
-        return $event->participants()->paginate(10);
+        $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
+            $query->where('reference', "%$value%");
+        });
+
+        $query = QueryBuilder::for($event->participants());
+
+        return $query->defaultSort('-date')
+        ->allowedSorts(['reference'])
+        ->allowedFilters([$globalSearch])
+        ->withPaginator()
+        ->withQueryString();
     }
 
     public function asController(ActionRequest $request): LengthAwarePaginator
