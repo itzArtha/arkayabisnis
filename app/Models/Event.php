@@ -160,4 +160,9 @@ class Event extends Model
     {
         return $this->hasOne(EventStat::class, 'event_id');
     }
+
+    public function ots()
+    {
+        return $this->hasOne(Ots::class, 'event_id');
+    }
 }

@@ -1,11 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Http\Request;
+use App\Actions\Tokoevent\Finance\UI\ShowFinance;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-
-Route::get('/finance', function () {
-    return Inertia::render('Event/Finance');
-})->name('index');
+Route::get('/', ShowFinance::class)->name('index');

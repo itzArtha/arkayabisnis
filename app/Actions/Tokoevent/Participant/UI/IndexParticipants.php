@@ -25,7 +25,9 @@ class IndexParticipants
 
         $query = QueryBuilder::for($event->participants());
 
-        return $query->defaultSort('-date')
+        $query->with('ticket', 'user');
+
+        return $query->defaultSort('-reference')
         ->allowedSorts(['reference'])
         ->allowedFilters([$globalSearch])
         ->withPaginator()

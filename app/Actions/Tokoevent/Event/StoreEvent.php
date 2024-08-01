@@ -26,6 +26,10 @@ class StoreEvent
             'whatsapp' => $request->whatsapp
         ]);
 
+        $event->ots()->create([
+            'organizer_id' => $user->organizer->id
+        ]);
+
         $user->update([
             'is_complete' => true,
             'completed_at' => now()

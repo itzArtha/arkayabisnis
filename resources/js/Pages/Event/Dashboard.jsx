@@ -30,14 +30,14 @@ const Dashboard = ({event, stats}) => {
                                    iconColor="blue"
                                    descriptionText="Tipe tiket yang tersedia">
                 </DashboardInfoCard>
-                <DashboardInfoCard title="Penjualan Harian"
+                <DashboardInfoCard title="Penjualan"
                                    value={stats.daily_sales}
                                    icon="money-bill"
                                    iconColor="orange"
                                    descriptionValue="%52+"
                                    descriptionText="daripada kemarin">
                 </DashboardInfoCard>
-                <DashboardInfoCard title="Pengunjung Harian" value={stats.daily_visitors}
+                <DashboardInfoCard title="Pengunjung" value={stats.daily_visitors}
                                    descriptionValue={"+0"}
                                    icon="chart-line"
                                    iconColor="cyan"
