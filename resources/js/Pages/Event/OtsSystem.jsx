@@ -10,7 +10,7 @@ export default function OtsSystem({ ots }) {
             <Layout>
                 <Head title="Sistem OTS" />
                 <div className={"card col-sm-12 md:py-8"}>
-                    {ots && <OtsContent />}
+                    {ots && <OtsContent ots={ots} />}
                     {!ots && <OtsWelcome />}
                 </div>
             </Layout>

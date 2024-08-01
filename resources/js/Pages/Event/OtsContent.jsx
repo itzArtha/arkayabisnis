@@ -21,7 +21,7 @@ export default function OtsContent({ ots }) {
     const [visible, setVisible] = useState(false);
     const {data, setData, post, processing, errors, reset} = useForm({
         payment_methods: '',
-        quantity: 0,
+        quantity: 0
     });
 
     const leftToolbarTemplate = () => {
@@ -34,6 +34,7 @@ export default function OtsContent({ ots }) {
         return <div className={"flex gap-2"}>
                 <PrimaryButton label={"Pembeli"} icon={"pi pi-plus"}
                 onClick={() => setVisible(true)}/>
+            <PrimaryButton icon={"pi pi-cog"} />
         </div>
     }
 
@@ -60,6 +61,8 @@ export default function OtsContent({ ots }) {
 
     const submit = (e) => {
         e.preventDefault();
+
+        console.log(data);
     };
 
     const payment_methods = [
@@ -90,18 +93,22 @@ export default function OtsContent({ ots }) {
                     <Dialog header="Pembelian OTS" draggable={false} position={"center"} visible={visible} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
                         <div className={"flex justify-content-center"}>
                             <div className={"detail-buyer mb-4"}>
-                                <div className="mb-3">
-                                    <label htmlFor="email" className="block text-900 font-medium mb-2">Email</label>
+                                { ots.settings?.fields?.map((item, key) => (
+
+                                <div className="mb-3" key={key}>
+                                    <label htmlFor={item} className="block text-900 font-medium mb-2 capitalize">{item}</label>
                                         <InputText
-                                            id="email"
+                                            id={item}
                                             type="text"
-                                            className="w-full pl-5"
-                                            value={data.email}
-                                            onChange={(e) => setData('email', e.target.value)}
+                                            className="w-full"
+                                            value={data[item]}
+                                            onChange={(e) => setData(item, e.target.value)}
                                         />
 
-                                    <InputError message={errors.email} className=""/>
+                                    <InputError message={errors[item]} />
                                 </div>
+
+                                ))}
                                 <div className="mb-3">
                                 <label className="block text-900 font-medium mb-2">Jumlah tiket</label>
                                     <InputNumber min={0} max={10} value={data.quantity} onValueChange={(e) => setData('quantity', e.value)} showButtons buttonLayout="horizontal"
