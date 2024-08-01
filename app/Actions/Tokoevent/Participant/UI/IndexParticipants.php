@@ -8,8 +8,8 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Spatie\QueryBuilder\AllowedFilter;
 use App\Services\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class IndexParticipants
 {

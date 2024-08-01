@@ -1,11 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Http\Request;
+use App\Actions\Tokoevent\Ots\UI\ShowOts;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 
-Route::get('/ots-system', function () {
-    return Inertia::render('Event/OtsSystem');
-})->name('index');
+Route::get('/', ShowOts::class)->name('index');
