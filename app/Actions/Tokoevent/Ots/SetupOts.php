@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Actions\Tokoevent\Event;
+namespace App\Actions\Tokoevent\Ots;
 
 use App\Enums\OtsStatusEnum;
 use App\Models\Event;
+use App\Models\Ots;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -14,19 +16,22 @@ class SetupOts
 {
     use AsAction;
 
-    public function handle(ActionRequest $request): Event
+    public function handle(ActionRequest $request): Ots
     {
         /** @var User $user */
         $user = $request->user();
 
-        $ots = $user->event()->ots()->update([
-            'status' => OtsStatusEnum::ACTIVE->value
+        return $user->event->ots()->updateOrCreate([
+            'uuid' => Str::uuid(),
+            'organizer_id' => $user->organizer->id,
+            'status' => OtsStatusEnum::ACTIVE->value,
+            'settings' => [
+                'fields' => $request->input('fields')
+            ]
         ]);
-
-        return $ots;
     }
 
-    public function asController(ActionRequest $request): Event
+    public function asController(ActionRequest $request): Ots
     {
         $request->validate();
 

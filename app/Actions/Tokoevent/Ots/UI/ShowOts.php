@@ -2,7 +2,7 @@
 
 namespace App\Actions\Tokoevent\Ots\UI;
 
-use App\Models\User;
+use App\Models\Ots;
 use Inertia\Inertia;
 use Inertia\Response;
 use Lorisleiva\Actions\ActionRequest;
@@ -12,17 +12,19 @@ class ShowOts
 {
     use AsAction;
 
-    public function handle(ActionRequest $request)
+    public function handle(ActionRequest $request): Ots|null
     {
-        return $request;
+        return $request->user()->event->ots;
     }
 
-    public function htmlResponse(): Response
+    public function htmlResponse(Ots|null $ots): Response
     {
-        return Inertia::render('Event/OtsSystem');
+        return Inertia::render('Event/OtsSystem', [
+            'ots' => $ots
+        ]);
     }
 
-    public function asController(ActionRequest $request): ActionRequest
+    public function asController(ActionRequest $request): Ots|null
     {
         return $this->handle($request);
     }
