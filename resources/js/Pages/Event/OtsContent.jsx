@@ -13,6 +13,9 @@ import {SelectButton} from "primereact/selectbutton";
 import {Dialog} from "primereact/dialog";
 import {InputNumber} from "primereact/inputnumber";
 import InputError from "@/Components/InputError.jsx";
+import {IconField} from "primereact/iconfield";
+import {InputIcon} from "primereact/inputicon";
+import {InputText} from "primereact/inputtext";
 
 export default function OtsContent({ ots }) {
     const [visible, setVisible] = useState(false);
@@ -84,11 +87,23 @@ export default function OtsContent({ ots }) {
                         <Column field="status" header="Status" body={statusFormat}></Column>
                     </DataTable>
 
-                    <Dialog header="Pembelian OTS" draggable={false} visible={visible} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
+                    <Dialog header="Pembelian OTS" draggable={false} position={"center"} visible={visible} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
                         <div className={"flex justify-content-center"}>
                             <div className={"detail-buyer mb-4"}>
+                                <div className="mb-3">
+                                    <label htmlFor="email" className="block text-900 font-medium mb-2">Email</label>
+                                        <InputText
+                                            id="email"
+                                            type="text"
+                                            className="w-full pl-5"
+                                            value={data.email}
+                                            onChange={(e) => setData('email', e.target.value)}
+                                        />
+
+                                    <InputError message={errors.email} className=""/>
+                                </div>
+                                <div className="mb-3">
                                 <label className="block text-900 font-medium mb-2">Jumlah tiket</label>
-                                <div>
                                     <InputNumber min={0} max={10} value={data.quantity} onValueChange={(e) => setData('quantity', e.value)} showButtons buttonLayout="horizontal"
                                               incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" />
                                     <InputError message={errors.quantity} className=""/>
