@@ -12,7 +12,7 @@ import {InputNumber} from "primereact/inputnumber";
 export default function OtsHeader({ ots }) {
     const [visible, setVisible] = useState(false);
     const {data, setData, post, processing, errors, reset} = useForm({
-        type: '',
+        type: 'topup',
     });
 
     const submit = (e) => {
@@ -79,7 +79,7 @@ export default function OtsHeader({ ots }) {
                 <div className={"flex justify-content-center"}>
                     <div className={"detail-buyer mb-4"}>
                         <div className={"mb-3"}>
-                            <label className="block text-900 font-medium mb-2">Tambahkan saldo jaminan dengan cara apa?</label>
+                            <p className="m-0">Tambahkan saldo jaminan dengan cara apa?</p>
                             <div className="mt-4 flex justify-content-center">
                                 <SelectButton className={"grid gap-2"} value={data.type} onChange={(e) => setData('type', e.value)} optionLabel="name" options={types} />
                             </div>
