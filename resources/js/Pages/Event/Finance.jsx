@@ -8,7 +8,7 @@ import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
 import {InputNumber} from "primereact/inputnumber";
 import {InputText} from "primereact/inputtext";
-import currency from "currency.js";
+import FormatRupiah from "@/Components/FormatRupiah";
 
 export default function Welcome({ transactions, withdraws, header }) {
     const [visible, setVisible] = useState(false);
@@ -18,8 +18,6 @@ export default function Welcome({ transactions, withdraws, header }) {
             <Button severity={"warning"} label="Kirim" icon="pi pi-arrow-right" iconPos={"right"} onClick={() => setVisible(false)} autoFocus />
         </div>
     );
-
-    const balance = currency(header.balance, {symbol: 'Rp', separator: '.', precision: 0}).format();
 
     return (
         <>
@@ -39,7 +37,7 @@ export default function Welcome({ transactions, withdraws, header }) {
                             </svg>
                             <div className="z-2 relative text-white">
                                 <div className="text-xl font-semibold mb-3">Saldo</div>
-                                <div className="text-2xl mb-5 font-bold">{balance}</div>
+                                <div className="text-2xl mb-5 font-bold">{<FormatRupiah amount={header.balance} />}</div>
                                 <div className="flex align-items-center justify-content-between"><span
                                     className="text-sm font-light">Penarikan terakhir: Rp1.000.000</span><span
                                     className="font-medium text-lg">

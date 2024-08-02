@@ -18,9 +18,15 @@ import {InputIcon} from "primereact/inputicon";
 import {InputText} from "primereact/inputtext";
 import {Dropdown} from "primereact/dropdown";
 import {Message} from "primereact/message";
+import FormatRupiah from "@/Components/FormatRupiah.jsx";
 
 export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     const [visible, setVisible] = useState(false);
+    const [calculation, setCalculation] = useState({
+        subtotal: 0,
+        admin: 5000,
+        total: 0,
+    });
     const {data, setData, post, processing, errors, reset} = useForm({
         payment_methods: '',
         quantity: 0,
@@ -109,7 +115,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                     <label className="block text-900 font-medium mb-2">Pilih tiket</label>
                                     <Dropdown value={data.ticket} onChange={(e) => setData('ticket', e.value)} options={tickets} optionLabel="label"
                                               placeholder="Pilih tiket" className="w-full" />
-                                    <InputError message={errors.quantity} className=""/>
+                                    <InputError message={errors.ticket} className=""/>
                                 </div>
                                 <div className="mb-3">
                                     <label className="block text-900 font-medium mb-2">Jumlah tiket</label>
@@ -123,6 +129,17 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                     </div>
                                     <InputError message={errors.payment_methods} className=""/>
                                     {data.payment_methods === 'cash' && <Message severity="warn" text="Pastikan dana jaminan kamu cukup ya!" />}
+                                </div>
+                                <div className={"text-right"}>
+                                    <div className={"mb-1"}>
+                                        <span className="text-900 text-md font-semibold">Subtotal: {<FormatRupiah amount={calculation.subtotal} />}</span>
+                                    </div>
+                                    <div className={"mb-1"}>
+                                        <span className="text-900 text-md font-semibold">Biaya Admin: {<FormatRupiah amount={calculation.admin} />}</span>
+                                    </div>
+                                    <div className={"mb-1"}>
+                                        <span className="text-red-500 text-md font-semibold">Total: {<FormatRupiah amount={calculation.total} />}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
