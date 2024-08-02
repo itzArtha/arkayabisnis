@@ -16,12 +16,15 @@ import InputError from "@/Components/InputError.jsx";
 import {IconField} from "primereact/iconfield";
 import {InputIcon} from "primereact/inputicon";
 import {InputText} from "primereact/inputtext";
+import {Dropdown} from "primereact/dropdown";
+import {Message} from "primereact/message";
 
-export default function OtsContent({ ots }) {
+export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     const [visible, setVisible] = useState(false);
     const {data, setData, post, processing, errors, reset} = useForm({
         payment_methods: '',
-        quantity: 0
+        quantity: 0,
+        ticket: '',
     });
 
     const leftToolbarTemplate = () => {
@@ -34,19 +37,12 @@ export default function OtsContent({ ots }) {
         return <div className={"flex gap-2"}>
                 <PrimaryButton label={"Pembeli"} icon={"pi pi-plus"}
                 onClick={() => setVisible(true)}/>
-            <PrimaryButton icon={"pi pi-cog"} />
+            <PrimaryButton onClick={() => setModalSettingVisible(true)} icon={"pi pi-cog"} />
         </div>
     }
 
     const dateFormat = (rowData) => {
         return moment(rowData.start_date).format('MMMM Do YYYY, HH:mm');
-    };
-
-    const actionIconFormat = (rowData) => {
-        return <div>
-            <Button severity={"info"} rounded text icon={"pi pi-external-link"} />
-            <Button severity={"warning"} rounded text icon={"pi pi-pencil"} />
-        </div>;
     };
 
     const locationFormat = (rowData) => {
@@ -110,14 +106,23 @@ export default function OtsContent({ ots }) {
 
                                 ))}
                                 <div className="mb-3">
-                                <label className="block text-900 font-medium mb-2">Jumlah tiket</label>
+                                    <label className="block text-900 font-medium mb-2">Pilih tiket</label>
+                                    <Dropdown value={data.ticket} onChange={(e) => setData('ticket', e.value)} options={tickets} optionLabel="label"
+                                              placeholder="Pilih tiket" className="w-full" />
+                                    <InputError message={errors.quantity} className=""/>
+                                </div>
+                                <div className="mb-3">
+                                    <label className="block text-900 font-medium mb-2">Jumlah tiket</label>
                                     <InputNumber min={0} max={10} value={data.quantity} onValueChange={(e) => setData('quantity', e.value)} showButtons buttonLayout="horizontal"
                                               incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" />
                                     <InputError message={errors.quantity} className=""/>
                                 </div>
-                                <div className="mt-4 flex justify-content-center">
-                                    <SelectButton className={"grid gap-2"} value={data.payment_methods} onChange={(e) => setData('payment_methods', e.value)} optionLabel="name" options={payment_methods} />
+                                <div className="mt-4">
+                                    <div className={"mb-3 flex justify-content-center"}>
+                                        <SelectButton className={"grid gap-2"} value={data.payment_methods} onChange={(e) => setData('payment_methods', e.value)} optionLabel="name" options={payment_methods} />
+                                    </div>
                                     <InputError message={errors.payment_methods} className=""/>
+                                    {data.payment_methods === 'cash' && <Message severity="warn" text="Pastikan dana jaminan kamu cukup ya!" />}
                                 </div>
                             </div>
                         </div>

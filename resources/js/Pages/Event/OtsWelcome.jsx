@@ -5,29 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import {Dialog} from "primereact/dialog";
 import {SelectButton} from "primereact/selectbutton";
 
-export default function OtsWelcome() {
-    const [visible, setVisible] = useState(false);
-    const {data, setData, post, processing, errors, reset} = useForm({
-        fields: '',
-    });
-
-    const submit = (e) => {
-        e.preventDefault();
-
-        post(route('ots.store'))
-    };
-
-    const fields = [
-        { name: 'Nama', value: 'name' },
-        { name: 'Email', value: 'email' },
-        { name: 'No. WA', value: 'whatsapp' }
-    ];
-
-    const footerContent = (
-        <div>
-            <PrimaryButton onClick={submit} label="Simpan" icon="pi pi-check" className={"w-full"} />
-        </div>
-    );
+export default function OtsWelcome({setVisible}) {
 
     return (
         <>
@@ -42,14 +20,7 @@ export default function OtsWelcome() {
                             </div>
                         </div>
                     </div>
-                    <Dialog header="Atur Sistem OTS" draggable={false} visible={visible} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
-                        <div className={"detail-buyer mb-4"}>
-                            <p className="m-0">Data apa aja yang kamu perluin dari pembeli?</p>
-                            <div className="mt-4 flex justify-content-center">
-                                <SelectButton className={"grid gap-2"} value={data.fields} onChange={(e) => setData('fields', e.value)} optionLabel="name" options={fields} multiple />
-                            </div>
-                        </div>
-                    </Dialog>
+
         </>
     );
 }

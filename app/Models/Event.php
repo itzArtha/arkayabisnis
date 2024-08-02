@@ -106,7 +106,7 @@ class Event extends Model
         return $this->hasMany(EventOrganizer::class, 'event_id');
     }
 
-    public function ticket()
+    public function tickets()
     {
         return $this->hasMany(Ticket::class, 'event_id');
     }

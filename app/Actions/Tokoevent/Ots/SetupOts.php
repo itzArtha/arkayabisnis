@@ -22,7 +22,9 @@ class SetupOts
         $user = $request->user();
 
         return $user->event->ots()->updateOrCreate([
-            'uuid' => Str::uuid(),
+            'id' => $user->event->ots->id
+        ],[
+            'uuid' => $user->event->ots->uuid ?? Str::uuid(),
             'organizer_id' => $user->organizer->id,
             'status' => OtsStatusEnum::ACTIVE->value,
             'settings' => [
