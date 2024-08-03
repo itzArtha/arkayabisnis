@@ -22,12 +22,15 @@ import FormatRupiah from "@/Components/FormatRupiah.jsx";
 
 export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     const [visible, setVisible] = useState(false);
+    const [processing, setProcessing] = useState(false);
+    const [payment, setPayment] = useState({});
+    const [errors, setErrors] = useState({});
     const [calculation, setCalculation] = useState({
         subtotal: 0,
         admin: 0,
         total: 0,
     });
-    const {data, setData, post, processing, errors, reset} = useForm({
+    const {data, setData, post, reset} = useForm({
         payment_methods: '',
         quantity: 0,
         ticket: '',
@@ -75,8 +78,14 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
 
     const submit = (e) => {
         e.preventDefault();
-
-        console.log(data);
+        setProcessing(true);
+        axios.post(route('ots.transaction.store', {ots: ots.data.id}), data)
+            .then((response) => {
+                setPayment(response.data.data)
+            }).catch((err) => {
+                setErrors(err.response.data.errors);
+        });
+        setProcessing(false);
     };
 
     const payment_methods = [
@@ -86,7 +95,8 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
 
     const footerContent = (
         <div>
-            <PrimaryButton onClick={submit} label="Checkout" icon="pi pi-check" className={"w-full"} />
+            {payment.qr_code && <PrimaryButton loading={processing} disabled={processing} onClick={() => setVisible(false)} label="Tutup" icon="pi pi-times" className={"w-full"} />}
+            {!payment.qr_code && <PrimaryButton loading={processing} disabled={processing} onClick={submit} label="Checkout" icon="pi pi-check" className={"w-full"} />}
         </div>
     );
 
@@ -119,7 +129,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                             onChange={(e) => setData(item, e.target.value)}
                                         />
 
-                                    <InputError message={errors[item]} />
+                                    {item !== 'name' && <InputError message={errors[item]} />}
                                 </div>
 
                                 ))}
@@ -154,6 +164,12 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                         <span className="text-red-500 text-md font-semibold">Total: {<FormatRupiah amount={calculation.total} />}</span>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div className={"mt-4"}>
+                            <div className={"text-center"}>
+                                <p>Silakan bayar melalui QRIS di bawah ini</p>
+                                <img alt="qr code" src={payment.qr_code} className="w-12 xl:w-8" />
                             </div>
                         </div>
                     </Dialog>
