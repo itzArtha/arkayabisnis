@@ -13,6 +13,7 @@ use App\Models\Payment;
 use App\Models\Ticket;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -53,9 +54,9 @@ class StoreOtsTransaction
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
-            'email' => ['sometimes', 'email', Rule::unique('users', 'email')],
-            'whatsapp' => ['sometimes', 'max:13', Rule::unique('users', 'phone')],
+            'name' => ['sometimes', 'string'],
+            'email' => ['sometimes', 'email'],
+            'whatsapp' => ['required', 'max:13'],
             'quantity' => ['sometimes', 'integer'],
             'ticket_id' => ['required', Rule::exists('tickets', 'id')],
             'event_id' => ['required', Rule::exists('events', 'id')],
@@ -65,6 +66,10 @@ class StoreOtsTransaction
 
     public function prepareForValidation(ActionRequest $request): void
     {
+        if(blank($request->ticket)) {
+            throw ValidationException::withMessages(['ticket' => 'Tiket tidak boleh kosong']);
+        }
+
         $request->merge([
             'ticket_id' => $request->ticket['id'],
             'event_id' => $request->ticket['event_id']

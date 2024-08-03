@@ -30,7 +30,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
         admin: 0,
         total: 0,
     });
-    const {data, setData, post, reset} = useForm({
+    const {data, setData, reset} = useForm({
         payment_methods: '',
         quantity: 0,
         ticket: '',
@@ -57,7 +57,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     const rightToolbarTemplate = () => {
         return <div className={"flex gap-2"}>
                 <PrimaryButton label={"Pembeli"} icon={"pi pi-plus"}
-                onClick={() => setVisible(true)}/>
+                onClick={() => openPaymentModal()}/>
             <PrimaryButton onClick={() => setModalSettingVisible(true)} icon={"pi pi-cog"} />
         </div>
     }
@@ -77,6 +77,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     };
 
     const submit = (e) => {
+
         e.preventDefault();
         setProcessing(true);
         axios.post(route('ots.transaction.store', {ots: ots.data.id}), data)
@@ -87,6 +88,13 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
         });
         setProcessing(false);
     };
+
+    function openPaymentModal()
+    {
+        setVisible(true);
+        setPayment({});
+        reset()
+    }
 
     const payment_methods = [
         { name: 'QRIS', value: 'qris' },
@@ -166,12 +174,13 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                 </div>
                             </div>
                         </div>
-                        <div className={"mt-4"}>
+
+                        {payment.qr_code && <div className={"mt-4"}>
                             <div className={"text-center"}>
                                 <p>Silakan bayar melalui QRIS di bawah ini</p>
                                 <img alt="qr code" src={payment.qr_code} className="w-12 xl:w-8" />
                             </div>
-                        </div>
+                        </div>}
                     </Dialog>
                 </div>
 

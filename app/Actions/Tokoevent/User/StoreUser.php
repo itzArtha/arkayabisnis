@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\Ots;
 use App\Models\User;
 use App\Rules\FieldOtsRule;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Lorisleiva\Actions\ActionRequest;
@@ -23,15 +24,24 @@ class StoreUser
 
     public function handle(array $attributes): User
     {
+        if(Arr::exists($attributes, 'email') or Arr::exists($attributes, 'phone')) {
+            $user = User::orWhere('email', Arr::get($attributes, 'email'))
+                ->orWhere('phone', Arr::get($attributes, 'phone'))->first();
+
+            $user->update($attributes);
+
+            return $user->refresh();
+        }
+
         return User::create($attributes);
     }
 
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
-            'email' => ['required', 'string'],
-            'phone' => ['nullable', 'string'],
+            'name' => ['nullable', 'string'],
+            'email' => ['nullable', 'string'],
+            'phone' => ['required', 'string'],
             'password' => ['required', 'string']
         ];
     }
@@ -50,6 +60,8 @@ class StoreUser
 
     public function fromOts(ActionRequest $request): User
     {
+        $this->setRawAttributes($request->all());
+
         return $this->handle($this->validateAttributes());
     }
 }
