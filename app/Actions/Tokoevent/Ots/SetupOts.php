@@ -6,6 +6,7 @@ use App\Enums\OtsStatusEnum;
 use App\Models\Event;
 use App\Models\Ots;
 use App\Models\User;
+use App\Rules\FieldOtsRule;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Lorisleiva\Actions\ActionRequest;
@@ -36,7 +37,7 @@ class SetupOts
     public function rules(): array
     {
         return [
-            'fields.*' => ['required']
+            'fields' => ['required', 'array', new FieldOtsRule]
         ];
     }
 

@@ -7,6 +7,7 @@ import {SelectButton} from "primereact/selectbutton";
 import {Dialog} from "primereact/dialog";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import OtsHeader from "@/Pages/Event/OtsHeader";
+import InputError from "@/Components/InputError";
 
 export default function OtsSystem({ ots, tickets }) {
     const [visible, setVisible] = useState(false);
@@ -59,6 +60,7 @@ export default function OtsSystem({ ots, tickets }) {
                                 <div className="mt-4 flex justify-content-center">
                                     <SelectButton className={"grid gap-2"} value={data.fields} onChange={(e) => setData('fields', e.value)} optionLabel="name" options={fields} multiple />
                                 </div>
+                                <InputError message={errors.fields} />
                             </div>
                             {/*<div>
                                 <p className="m-0">Atur skema biaya admin</p>
