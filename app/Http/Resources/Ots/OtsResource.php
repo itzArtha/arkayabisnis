@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Ots;
 
+use App\Actions\Helpers\GenerateQrCode;
 use App\Models\Event;
 use App\Models\Ots;
 use Illuminate\Http\Request;
@@ -21,7 +22,8 @@ class OtsResource extends JsonResource
             'total_sales' => $ots->total_sales,
             'total_participants' => $ots->total_participants,
             'fields' => Arr::get($ots->settings, 'fields'),
-            'collateral' => $ots->wallet->balance
+            'collateral' => $ots->wallet->balance,
+            'qr_code' => GenerateQrCode::run($ots->uuid)
         ];
     }
 }

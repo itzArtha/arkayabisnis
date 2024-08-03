@@ -33,6 +33,15 @@ export default function OtsHeader({ ots }) {
         return types.filter((item) => item.value === data.type)[0].name;
     }
 
+    function downloadImage(img)
+    {
+        const a = document.createElement('a')
+
+        a.download = 'qr-code-ots.png'
+        a.href = img
+        a.click()
+    }
+
     const footerContent = (
         <div>
             {data.type
@@ -68,16 +77,18 @@ export default function OtsHeader({ ots }) {
                                 className="text-600 font-medium text-lg"></span>
                             </div>
                             <div className={"mt-4"}>
-                                <PrimaryButton label="QR Code" icon="pi pi-download" />
+                                <PrimaryButton onClick={() => {
+                                    downloadImage(ots.data.qr_code)
+                                }} label="QR Code" icon="pi pi-download" />
                             </div>
                         </div>
                         <div className={"col-12 xl:col-6 flex xl:justify-content-end justify-content-center"}>
-                            <img alt="avatar" src="https://5.imimg.com/data5/SELLER/Default/2022/10/RR/YR/YM/13168808/cu-qr-codes-chennai-website-developers--500x500.png" className="w-12 xl:w-8" />
+                            <img alt="qr code" src={ots.data.qr_code} className="w-12 xl:w-8" />
                         </div>
                     </div>
                 </div>
             </div>
-            <Dialog header="Atur Sistem OTS" draggable={false} visible={visible} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
+            <Dialog header="Tambah Jaminan" draggable={false} visible={visible} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
                 <div className={"flex justify-content-center"}>
                     <div className={"detail-buyer mb-4"}>
                         <div className={"mb-3"}>

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Tokoevent\Ots\UI;
 
+use App\Actions\Helpers\GenerateQrCode;
 use App\Http\Resources\Event\TicketsResource;
 use App\Http\Resources\Ots\OtsResource;
 use App\Models\Event;
