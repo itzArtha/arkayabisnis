@@ -33,6 +33,13 @@ class SetupOts
         ]);
     }
 
+    public function rules(): array
+    {
+        return [
+            'fields.*' => ['required']
+        ];
+    }
+
     public function asController(ActionRequest $request): Ots
     {
         $request->validate();

@@ -1,5 +1,5 @@
 import {Link, Head, useForm, router} from '@inertiajs/react';
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Layout from '@/Layouts/layout/layout';
 import OtsWelcome from "@/Pages/Event/OtsWelcome";
 import {Toolbar} from "primereact/toolbar";
@@ -24,7 +24,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     const [visible, setVisible] = useState(false);
     const [calculation, setCalculation] = useState({
         subtotal: 0,
-        admin: 5000,
+        admin: 0,
         total: 0,
     });
     const {data, setData, post, processing, errors, reset} = useForm({
@@ -32,6 +32,18 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
         quantity: 0,
         ticket: '',
     });
+
+    useEffect(() => {
+        let subtotal = (data.ticket?.price ?? 0) * data.quantity;
+        let admin = data.ticket?.price === 0 ? 0 : 5000 * data.quantity;
+
+       setCalculation({
+           ...calculation,
+           subtotal: subtotal,
+           admin: admin,
+           total: subtotal + admin
+       })
+    }, [data]);
 
     const leftToolbarTemplate = () => {
         return <>
@@ -94,8 +106,8 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
 
                     <Dialog header="Pembelian OTS" draggable={false} position={"center"} visible={visible} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
                         <div className={"flex justify-content-center"}>
-                            <div className={"detail-buyer mb-4"}>
-                                { ots.settings?.fields?.map((item, key) => (
+                            <div className={"detail-buyer"}>
+                                { ots.data?.fields?.map((item, key) => (
 
                                 <div className="mb-3" key={key}>
                                     <label htmlFor={item} className="block text-900 font-medium mb-2 capitalize">{item}</label>
@@ -113,14 +125,15 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                 ))}
                                 <div className="mb-3">
                                     <label className="block text-900 font-medium mb-2">Pilih tiket</label>
-                                    <Dropdown value={data.ticket} onChange={(e) => setData('ticket', e.value)} options={tickets} optionLabel="label"
+                                    <Dropdown value={data.ticket} onChange={(e) => setData('ticket', e.value)} options={tickets.data} optionLabel="title"
                                               placeholder="Pilih tiket" className="w-full" />
                                     <InputError message={errors.ticket} className=""/>
                                 </div>
                                 <div className="mb-3">
                                     <label className="block text-900 font-medium mb-2">Jumlah tiket</label>
                                     <InputNumber min={0} max={10} value={data.quantity} onValueChange={(e) => setData('quantity', e.value)} showButtons buttonLayout="horizontal"
-                                              incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" />
+                                              className={"w-full"}
+                                                 incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" />
                                     <InputError message={errors.quantity} className=""/>
                                 </div>
                                 <div className="mt-4">
@@ -128,9 +141,9 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                         <SelectButton className={"grid gap-2"} value={data.payment_methods} onChange={(e) => setData('payment_methods', e.value)} optionLabel="name" options={payment_methods} />
                                     </div>
                                     <InputError message={errors.payment_methods} className=""/>
-                                    {data.payment_methods === 'cash' && <Message severity="warn" text="Pastikan dana jaminan kamu cukup ya!" />}
+                                    {data.payment_methods === 'cash' && <Message severity="warn" text="Pastikan dana jaminan kamu cukup ya!" className={"w-full"} />}
                                 </div>
-                                <div className={"text-right"}>
+                                <div className={"mt-4 text-right"}>
                                     <div className={"mb-1"}>
                                         <span className="text-900 text-md font-semibold">Subtotal: {<FormatRupiah amount={calculation.subtotal} />}</span>
                                     </div>

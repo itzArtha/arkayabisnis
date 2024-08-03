@@ -8,11 +8,13 @@ import {Dialog} from "primereact/dialog";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {Button} from "primereact/button";
 import {InputNumber} from "primereact/inputnumber";
+import FormatRupiah from "@/Components/FormatRupiah";
 
 export default function OtsHeader({ ots }) {
     const [visible, setVisible] = useState(false);
     const {data, setData, post, processing, errors, reset} = useForm({
         type: 'topup',
+        amount: 0,
     });
 
     const submit = (e) => {
@@ -46,7 +48,7 @@ export default function OtsHeader({ ots }) {
                     <div className="card relative overflow-hidden">
                         <div className="z-2 relative text-white">
                             <div className="text-xl text-900 font-semibold mb-3">Saldo Jaminan</div>
-                            <div className="text-2xl text-primary mb-5 font-bold">Rp10.000</div>
+                            <div className="text-2xl text-primary mb-5 font-bold">{<FormatRupiah amount={ots.data.collateral} />}</div>
                             <div className="flex align-items-center justify-content-between"><span
                                 className="text-sm text-900 font-light">Khusus diperlukan untuk metode pembayaran cash</span><span
                                 className="font-medium text-lg">
@@ -87,7 +89,7 @@ export default function OtsHeader({ ots }) {
                         <div className={"mb-3"}>
                             <label htmlFor={'currency-id'} className="block text-900 font-medium mb-2">Jumlah</label>
                             <div>
-                                <InputNumber className={"w-full"} inputId="currency-id" value={100} onValueChange={(e) => setData('amount', e.value)} mode="currency" currency="IDR" locale="id-ID" maxFractionDigits={0} />
+                                <InputNumber className={"w-full"} inputId="currency-id" value={data.amount} onValueChange={(e) => setData('amount', e.value)} mode="currency" currency="IDR" locale="id-ID" maxFractionDigits={0} />
                             </div>
                         </div>
                     </div>

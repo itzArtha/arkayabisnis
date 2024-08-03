@@ -11,7 +11,7 @@ import OtsHeader from "@/Pages/Event/OtsHeader";
 export default function OtsSystem({ ots, tickets }) {
     const [visible, setVisible] = useState(false);
     const {data, setData, post, processing, errors, reset} = useForm({
-        fields: '',
+        fields: ots.data.fields,
         fee: '0:100',
     });
 
@@ -60,13 +60,13 @@ export default function OtsSystem({ ots, tickets }) {
                                     <SelectButton className={"grid gap-2"} value={data.fields} onChange={(e) => setData('fields', e.value)} optionLabel="name" options={fields} multiple />
                                 </div>
                             </div>
-                            <div>
+                            {/*<div>
                                 <p className="m-0">Atur skema biaya admin</p>
                                 <div className="mt-4 flex justify-content-center">
                                     <SelectButton className={"grid gap-2"} value={data.fee} onChange={(e) => setData('fee', e.value)} optionLabel="name" options={fees} />
                                 </div>
                                 <p className="m-0 text-sm">*{checkAdminFee()}</p>
-                            </div>
+                            </div>*/}
                         </div>
                     </Dialog>
                 </div>

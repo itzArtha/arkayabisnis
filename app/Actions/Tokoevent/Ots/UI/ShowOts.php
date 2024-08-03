@@ -2,12 +2,13 @@
 
 namespace App\Actions\Tokoevent\Ots\UI;
 
+use App\Http\Resources\Event\TicketsResource;
+use App\Http\Resources\Ots\OtsResource;
 use App\Models\Event;
 use Inertia\Inertia;
 use Inertia\Response;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Spatie\LaravelOptions\Options;
 
 class ShowOts
 {
@@ -21,8 +22,8 @@ class ShowOts
     public function htmlResponse(Event $event): Response
     {
         return Inertia::render('Event/OtsSystem', [
-            'ots' => $event->ots,
-            'tickets' => Options::forArray($event->tickets->pluck('title', 'id'))
+            'ots' => OtsResource::make($event->ots),
+            'tickets' => TicketsResource::collection($event->tickets)
         ]);
     }
 
