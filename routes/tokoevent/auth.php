@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Tokoevent\Payment\Gateways\Xendit\Webhook\HandleWebhookPayment;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -16,6 +17,8 @@ Route::middleware('guest')->group(function () {
     Route::get('login-dashboard', function () {
         return Inertia::render('Auth/AuthDashboard');
     })->name('login-dashboard');
+
+    Route::post('/xendit-payment-callback', HandleWebhookPayment::class)->name('xendit.webhook.callback');
 
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');

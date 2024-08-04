@@ -8,6 +8,8 @@ use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Ots extends Model implements Wallet
 {
@@ -27,4 +29,9 @@ class Ots extends Model implements Wallet
         'status' => OtsStatusEnum::class,
         'settings' => Json::class
     ];
+
+    public function payments(): MorphMany
+    {
+        return $this->morphMany(Payment::class, 'sourceable');
+    }
 }

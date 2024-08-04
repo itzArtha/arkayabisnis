@@ -7,6 +7,7 @@ use App\Actions\Tokoevent\Participant\StoreParticipant;
 use App\Actions\Tokoevent\Payment\StorePayment;
 use App\Actions\Tokoevent\User\StoreUser;
 use App\Enums\PaymentMethodEnum;
+use App\Enums\PaymentStatusEnum;
 use App\Http\Resources\Finance\PaymentResource;
 use App\Models\Ots;
 use App\Models\Payment;
@@ -25,17 +26,18 @@ class StoreOtsTransaction
 
     public Ots $ots;
 
-    public function handle(ActionRequest $request): Payment
+    public function handle(Ots $ots, ActionRequest $request): Payment
     {
         $quantity = $request->input('quantity');
         $user = StoreUser::make()->fromOts($request);
         $ticket = Ticket::find($request->input('ticket_id'));
         $channel = $request->input('payment_methods');
 
-        $payment = StorePayment::run($user, $ticket, $quantity, $channel);
+        $payment = StorePayment::run($ots, $user, $ticket, $quantity, $channel);
 
         $request->merge([
-            'payment_id' => $payment->id
+            'payment_id' => $payment->id,
+            'status' => PaymentStatusEnum::IS_PENDING->value
         ]);
 
         for ($qty = 1; $qty <= $quantity; $qty++) {
@@ -80,6 +82,6 @@ class StoreOtsTransaction
     {
         $request->validate();
 
-        return $this->handle($request);
+        return $this->handle($ots, $request);
     }
 }

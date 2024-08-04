@@ -17,7 +17,7 @@ class StoreTransaction
     public function handle(Participant $participant, ActionRequest $request): Transaction
     {
         /** @var Transaction $transaction */
-        $transaction = $participant->transaction()->create($request->validated());
+        $transaction = $participant->transaction()->create($request->all());
 
         return $transaction;
     }

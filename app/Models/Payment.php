@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Json;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,9 +24,19 @@ class Payment extends Model
         'expired_at',
     ];
 
+    protected $casts = [
+        'actions' => Json::class,
+        'expired_at' => 'datetime'
+    ];
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class, 'payment_id');
+    }
+
+    public function source()
+    {
+        return $this->morphTo('sourceable');
     }
 
     public function user()
@@ -46,31 +57,36 @@ class Payment extends Model
                 return [
                     'key'   => self::IS_PENDING,
                     'label' => 'Tertunda',
-                    'color' => 'bg-yellow-100 text-yellow-800'
+                    'color' => 'bg-yellow-100 text-yellow-800',
+                    'severity' => 'warning'
                 ];
             case self::IS_SETTLEMENT:
                 return [
                     'key'   => self::IS_SETTLEMENT,
                     'label' => 'Sukses',
-                    'color' => 'bg-green-100 text-green-800'
+                    'color' => 'bg-green-100 text-green-800',
+                    'severity' => 'success'
                 ];
             case self::IS_EXPIRE:
                 return [
                     'key'   => self::IS_EXPIRE,
                     'label' => 'Kedaluarsa',
-                    'color' => 'bg-red-100 text-red-800'
+                    'color' => 'bg-red-100 text-red-800',
+                    'severity' => 'danger'
                 ];
             case self::IS_DENY:
                 return [
                     'key'   => self::IS_DENY,
                     'label' => 'Ditolak',
-                    'color' => 'bg-red-100 text-red-800'
+                    'color' => 'bg-red-100 text-red-800',
+                    'severity' => 'danger'
                 ];
             default:
                 return [
                     'key'   => self::IS_CANCEL,
                     'label' => 'Tidak diketahui',
-                    'color' => 'bg-red-100 text-red-800'
+                    'color' => 'bg-red-100 text-red-800',
+                    'severity' => 'danger'
                 ];
         }
     }

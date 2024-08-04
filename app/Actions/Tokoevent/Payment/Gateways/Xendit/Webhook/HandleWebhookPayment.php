@@ -2,24 +2,17 @@
 
 namespace App\Actions\Tokoevent\Payment\Gateways\Xendit\Webhook;
 
-use App\Enums\OtsStatusEnum;
+use App\Actions\Tokoevent\Payment\UpdatePayment;
 use App\Enums\PaymentStatusEnum;
-use App\Models\Event;
-use App\Models\Ots;
 use App\Models\Payment;
-use App\Models\User;
-use App\Rules\FieldOtsRule;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Inertia\Inertia;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Symfony\Component\HttpFoundation\Response;
 
 class HandleWebhookPayment
 {
     use AsAction;
-
 
     /**
      * @throws \Throwable
@@ -27,12 +20,14 @@ class HandleWebhookPayment
     public function handle(ActionRequest $request): Payment
     {
         return DB::transaction(function () use ($request) {
+            $attributes    = $request->input('data');
+
             $callbackToken = $request->header('x-callback-token');
             $webhookId     = $request->header('webhook-id');
-            $status        = $request->input('status');
+            $status        = Arr::get($attributes, 'status');
 
-            if ($callbackToken === env('XENDIT_CALLBACK_TOKEN')) {
-                $payment = Payment::where('reference', $request->input('external_id'))->first();
+            if ($callbackToken === config('xendit.callback')) {
+                $payment = Payment::where('reference_id', Arr::get($attributes, 'reference_id'))->first();
 
                 if(!$payment) {
                     abort(404);
@@ -40,9 +35,7 @@ class HandleWebhookPayment
 
                 if (blank($payment->webhook_id)) {
                     $data = [
-                        'webhook_id' => $webhookId,
-                        'status'     => $this->checkStatus($status),
-                        'data'       => $request->all()
+                        'status'     => $this->checkStatus($status)
                     ];
 
                     if($status === 'PAID') {
@@ -51,7 +44,9 @@ class HandleWebhookPayment
                         array_merge($data, ['cancelled_at' => now()]);
                     }
 
-                    UpdatePayment::run($payment, $data);
+                    if($payment->status !== PaymentStatusEnum::IS_SETTLEMENT->value) {
+                        UpdatePayment::run($payment, $data);
+                    }
                 }
 
                 return $payment;
@@ -72,8 +67,8 @@ class HandleWebhookPayment
     public function checkStatus(string $status): string
     {
         match ($status) {
-            'PAID'  => $status  = PaymentStatusEnum::IS_SETTLEMENT->value,
-            'PENDING'  => $status  = PaymentStatusEnum::IS_PENDING->value,
+            'PAID', 'SUCCEEDED'  => $status  = PaymentStatusEnum::IS_SETTLEMENT->value,
+            'PENDING', 'ACTIVE'  => $status  = PaymentStatusEnum::IS_PENDING->value,
             default => $status  = PaymentStatusEnum::IS_EXPIRE->value
         };
 

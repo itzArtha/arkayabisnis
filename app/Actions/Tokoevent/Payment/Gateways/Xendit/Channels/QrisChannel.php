@@ -5,7 +5,6 @@ namespace App\Actions\Tokoevent\Payment\Gateways\Xendit\Channels;
 use App\Models\Payment;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Xendit\Configuration;
-use Xendit\PaymentMethod\QRCode;
 use Xendit\PaymentRequest\PaymentRequestApi;
 use Xendit\PaymentRequest\PaymentRequestParameters;
 
@@ -22,15 +21,26 @@ class QrisChannel
             'reference_id' => (string) $payment->reference_id,
             'amount' => $payment->total,
             'currency' => 'IDR',
+            'type' => 'DYNAMIC',
             'payment_method' => [
-                'expires_at' => $payment->expired_at,
                 'type' => 'QR_CODE',
-                'reusability' => 'ONE_TIME_USE'
+                'reusability' => 'ONE_TIME_USE',
+                'qr_code' => [
+                    'channel_properties' => [
+                        'expires_at' => $payment->expired_at->toISOString(),
+                    ]
+                ]
             ],
+            'metadata' => [
+                'event_name' => $payment->transactions()->first()?->ticket?->event?->name,
+                'ticket_name' => $payment->transactions()->first()?->ticket?->name,
+                'quantity' => $payment->transactions()->count(),
+                'total' => $payment->total
+            ]
         ]);
 
         $result = $apiInstance->createPaymentRequest(null, null, $payment_request_parameters)->getPaymentMethod();
 
-        return $result['qr_code']['channel_properties'];
+        return $result;
     }
 }

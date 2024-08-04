@@ -1,4 +1,4 @@
-import {Link, Head, useForm, router} from '@inertiajs/react';
+import {Link, Head, useForm, router, usePage} from '@inertiajs/react';
 import React, {useContext, useEffect, useState} from "react";
 import Layout from '@/Layouts/layout/layout';
 import OtsWelcome from "@/Pages/Event/OtsWelcome";
@@ -19,6 +19,7 @@ import {InputText} from "primereact/inputtext";
 import {Dropdown} from "primereact/dropdown";
 import {Message} from "primereact/message";
 import FormatRupiah from "@/Components/FormatRupiah.jsx";
+import {valueOrDefault} from "chart.js/helpers";
 
 export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     const [visible, setVisible] = useState(false);
@@ -35,6 +36,8 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
         quantity: 0,
         ticket: '',
     });
+
+    const {payments} = usePage().props
 
     useEffect(() => {
         let subtotal = (data.ticket?.price ?? 0) * data.quantity;
@@ -63,17 +66,11 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     }
 
     const dateFormat = (rowData) => {
-        return moment(rowData.start_date).format('MMMM Do YYYY, HH:mm');
-    };
-
-    const locationFormat = (rowData) => {
-        return <div>
-            <a target={"_blank"} href={rowData.location.url}>{rowData.location.name}</a>
-        </div>;
+        return moment(rowData.created_at).format('MMMM Do YYYY, HH:mm');
     };
 
     const statusFormat = (rowData) => {
-        return <Tag value={"Paid"} severity={"success"} />;
+        return <Tag value={rowData.status.label} severity={rowData.status.severity} />;
     };
 
     const submit = (e) => {
@@ -97,8 +94,8 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     }
 
     const payment_methods = [
-        { name: 'QRIS', value: 'qris' },
-        { name: 'Cash', value: 'cash' }
+        { name: 'QRIS', value: 'QRIS' },
+        { name: 'Cash', value: 'CASH' }
     ];
 
     const footerContent = (
@@ -113,16 +110,17 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                 <Head title="Sistem OTS" />
                 <div>
                     <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-                    <DataTable value={[]} rows={10} tableStyle={{ minWidth: '50rem' }}>
+                    <DataTable value={payments?.data} rows={10} tableStyle={{ minWidth: '50rem' }}>
                         <Column header="#" body={(data, options) => options.rowIndex + 1}></Column>
-                        <Column field="name" header="No. Tiket"></Column>
-                        <Column field="start_date" header="Nama Tiket" body={dateFormat}></Column>
-                        <Column field="location" header="Jumlah" body={locationFormat}></Column>
-                        <Column field="location" header="Pembayaran" body={locationFormat}></Column>
+                        <Column field="ticket_name" header="Nama Tiket" ></Column>
+                        <Column field="quantity" header="Jumlah"></Column>
+                        <Column field="total" header="Total" body={(rowData) => <FormatRupiah amount={rowData.total} />}></Column>
+                        <Column field="channel" header="Pembayaran"></Column>
                         <Column field="status" header="Status" body={statusFormat}></Column>
+                        <Column field="created_at" header="Tanggal" body={dateFormat}></Column>
                     </DataTable>
 
-                    <Dialog header="Pembelian OTS" draggable={false} position={"center"} visible={visible} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
+                    <Dialog header="Pembelian OTS" draggable={false} position={"center"} visible={visible} className={"md:w-4 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
                         <div className={"flex justify-content-center"}>
                             <div className={"detail-buyer"}>
                                 { ots.data?.fields?.map((item, key) => (
@@ -159,7 +157,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                         <SelectButton className={"grid gap-2"} value={data.payment_methods} onChange={(e) => setData('payment_methods', e.value)} optionLabel="name" options={payment_methods} />
                                     </div>
                                     <InputError message={errors.payment_methods} className=""/>
-                                    {data.payment_methods === 'cash' && <Message severity="warn" text="Pastikan dana jaminan kamu cukup ya!" className={"w-full"} />}
+                                    {data.payment_methods === 'CASH' && <Message severity="warn" text="Pastikan dana jaminan kamu cukup ya!" className={"w-full"} />}
                                 </div>
                                 <div className={"mt-4 text-right"}>
                                     <div className={"mb-1"}>
@@ -177,7 +175,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
 
                         {payment.qr_code && <div className={"mt-4"}>
                             <div className={"text-center"}>
-                                <p>Silakan bayar melalui QRIS di bawah ini</p>
+                                <p>Silakan bayar melalui QRIS di bawah ini, tiket akan dikirimkan via whatsapp</p>
                                 <img alt="qr code" src={payment.qr_code} className="w-12 xl:w-8" />
                             </div>
                         </div>}

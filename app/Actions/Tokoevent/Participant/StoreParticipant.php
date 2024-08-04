@@ -16,7 +16,7 @@ class StoreParticipant
     public function handle(User $user, ActionRequest $request): Participant
     {
         /** @var Participant $participant */
-        $participant = $user->participants()->create($request->validated());
+        $participant = $user->participants()->create($request->all());
 
         return $participant;
     }

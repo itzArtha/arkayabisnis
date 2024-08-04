@@ -2,8 +2,9 @@
 
 namespace App\Actions\Tokoevent\Ots\UI;
 
-use App\Actions\Helpers\GenerateQrCode;
+use App\Actions\Tokoevent\Payment\UI\IndexPayments;
 use App\Http\Resources\Event\TicketsResource;
+use App\Http\Resources\Finance\PaymentsResource;
 use App\Http\Resources\Ots\OtsResource;
 use App\Models\Event;
 use Inertia\Inertia;
@@ -24,7 +25,8 @@ class ShowOts
     {
         return Inertia::render('Event/OtsSystem', [
             'ots' => OtsResource::make($event->ots),
-            'tickets' => TicketsResource::collection($event->tickets)
+            'tickets' => TicketsResource::collection($event->tickets),
+            'payments' => PaymentsResource::collection(IndexPayments::run($event->ots))
         ]);
     }
 
