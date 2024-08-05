@@ -15,7 +15,7 @@ class CheckUserCompleteRegister
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!$request->user()->completed_at or !$request->user()->event) {
+        if(!$request->user()->completed_at && !$request->user()->event) {
             return redirect(route('event.create'));
         }
 

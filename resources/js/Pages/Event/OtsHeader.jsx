@@ -9,18 +9,27 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {Button} from "primereact/button";
 import {InputNumber} from "primereact/inputnumber";
 import FormatRupiah from "@/Components/FormatRupiah";
+import { Message } from 'primereact/message';
 
 export default function OtsHeader({ ots }) {
     const [visible, setVisible] = useState(false);
-    const {data, setData, post, processing, errors, reset} = useForm({
+    const [payment, setPayment] = useState({});
+    const [errors, setErrors] = useState({});
+    const {data, setData, post, processing, reset} = useForm({
         type: 'topup',
         amount: 0,
+        payment_method: 'MANDIRI'
     });
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('ots.store'))
+        axios.post(route('ots.collateral.store', {ots: ots.data.id}), data)
+        .then((response) => {
+            setPayment(response.data)
+        }).catch((err) => {
+            setErrors(err.response.data.errors);
+        });
     };
 
     const types = [
@@ -103,6 +112,20 @@ export default function OtsHeader({ ots }) {
                                 <InputNumber className={"w-full"} inputId="currency-id" value={data.amount} onValueChange={(e) => setData('amount', e.value)} mode="currency" currency="IDR" locale="id-ID" maxFractionDigits={0} />
                             </div>
                         </div>
+                        {((payment.meta) && (data.type == 'topup')) && <div>
+                            <p>Silakan dibayar ke nomor virtual account di bawah</p>
+                            <div className='mt-2 text-center'>
+                                <div className='my-2'>
+                                    {!payment.confirmed && <Message severity="warn" text="Sedang menunggu pembayaran" />}
+                                    {payment.confirmed && <Message severity="success" text="Pembayaran berhasil" />}
+                                </div>
+                                {!payment.confirmed && <div>
+                                    <p className="m-0 text-red-500 text-md font-semibold">{payment.meta.channel_code}</p>
+                                    <p className="m-0 text-red-500 text-md font-semibold">{payment.meta.virtual_account_number}</p>
+                                    <p className="m-0 text-red-500 text-md font-semibold"><FormatRupiah amount={payment.amount} /></p>
+                                </div>}
+                            </div>
+                        </div>}
                     </div>
                 </div>
             </Dialog>

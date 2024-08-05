@@ -28,9 +28,11 @@ class StoreUser
             $user = User::orWhere('email', Arr::get($attributes, 'email'))
                 ->orWhere('phone', Arr::get($attributes, 'phone'))->first();
 
-            $user->update($attributes);
-
-            return $user->refresh();
+                if($user) {   
+                    $user->update($attributes);
+                    
+                    return $user->refresh();
+                }
         }
 
         return User::create($attributes);

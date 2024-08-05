@@ -23,7 +23,7 @@ class SetupOts
         $user = $request->user();
 
         return $user->event->ots()->updateOrCreate([
-            'id' => $user->event->ots->id
+            'id' => $user->event?->ots?->id
         ],[
             'uuid' => $user->event->ots->uuid ?? Str::uuid(),
             'organizer_id' => $user->organizer->id,

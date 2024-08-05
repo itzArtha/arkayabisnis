@@ -5,7 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import {Dialog} from "primereact/dialog";
 import {SelectButton} from "primereact/selectbutton";
 
-export default function OtsWelcome({setVisible}) {
+export default function OtsWelcome({setModalSettingVisible}) {
 
     return (
         <>
@@ -16,7 +16,7 @@ export default function OtsWelcome({setVisible}) {
                             <p>Dengan sistem ots, kamu bisa berjualan di stand atau di lokasi acara dengan mudah dan cepat bersama kami.</p>
                             <div>
                                 <PrimaryButton label={'Atur Sekarang!'} icon={"pi pi-key"}
-                                               onClick={() => setVisible(true)} />
+                                               onClick={() => setModalSettingVisible(true)} />
                             </div>
                         </div>
                     </div>

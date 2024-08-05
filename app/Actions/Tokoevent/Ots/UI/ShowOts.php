@@ -23,11 +23,13 @@ class ShowOts
 
     public function htmlResponse(Event $event): Response
     {
-        return Inertia::render('Event/OtsSystem', [
-            'ots' => OtsResource::make($event->ots),
-            'tickets' => TicketsResource::collection($event->tickets),
-            'payments' => PaymentsResource::collection(IndexPayments::run($event->ots))
-        ]);
+        return Inertia::render('Event/OtsSystem',
+            $event->ots ? [
+                'ots' => OtsResource::make($event->ots),
+                'tickets' => TicketsResource::collection($event->tickets),
+                'payments' => PaymentsResource::collection(IndexPayments::run($event->ots))
+            ] : []
+        );
     }
 
     public function asController(ActionRequest $request): Event

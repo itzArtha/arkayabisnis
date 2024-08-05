@@ -1,4 +1,4 @@
-import {Link, Head, useForm, router} from '@inertiajs/react';
+import {Link, Head, useForm, router, usePage} from '@inertiajs/react';
 import React, {useContext, useState} from "react";
 import Layout from '@/Layouts/layout/layout';
 import OtsWelcome from "@/Pages/Event/OtsWelcome";
@@ -9,10 +9,11 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import OtsHeader from "@/Pages/Event/OtsHeader";
 import InputError from "@/Components/InputError";
 
-export default function OtsSystem({ ots, tickets }) {
+export default function OtsSystem() {
+    const {ots, tickets} = usePage().props;
     const [visible, setVisible] = useState(false);
     const {data, setData, post, processing, errors, reset} = useForm({
-        fields: ots.data.fields,
+        fields: ots?.data?.fields,
         fee: '0:100',
     });
 
@@ -50,9 +51,9 @@ export default function OtsSystem({ ots, tickets }) {
             <Layout>
                 <Head title="Sistem OTS" />
                 <div className={"card col-sm-12"}>
-                    <OtsHeader ots={ots} />
-                    {ots && <OtsContent ots={ots} tickets={tickets} setModalSettingVisible={(e) => setVisible(e)} />}
-                    {!ots && <OtsWelcome setModalSettingVisible={setVisible(e)} />}
+                    {ots &&  <OtsHeader ots={ots} />}
+                    {ots &&  <OtsContent ots={ots} tickets={tickets} setModalSettingVisible={(e) => setVisible(e)} />}
+                    {!ots && <OtsWelcome setModalSettingVisible={(e) => setVisible(e)} />}
                     <Dialog header="Atur Sistem OTS" draggable={false} visible={visible} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
                         <div className={"detail-buyer mb-4"}>
                             <div className={"mb-3"}>

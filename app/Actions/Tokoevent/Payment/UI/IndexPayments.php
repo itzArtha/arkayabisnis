@@ -4,6 +4,7 @@ namespace App\Actions\Tokoevent\Payment\UI;
 
 use App\Http\Resources\Event\ParticipantsResource;
 use App\Models\Ots;
+use App\Models\Payment;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,13 +17,13 @@ class IndexPayments
 {
     use AsAction;
 
-    public function handle(Ots $parent): LengthAwarePaginator
+    public function handle(?Ots $parent): LengthAwarePaginator
     {
         $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
             $query->where('reference_id', "%$value%");
         });
 
-        $query = QueryBuilder::for($parent->payments());
+        $query = QueryBuilder::for($parent ? $parent->payments() : Payment::class);
 
         $query->with('transactions');
 
