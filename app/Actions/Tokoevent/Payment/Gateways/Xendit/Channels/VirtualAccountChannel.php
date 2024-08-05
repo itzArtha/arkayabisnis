@@ -3,7 +3,7 @@
 namespace App\Actions\Tokoevent\Payment\Gateways\Xendit\Channels;
 
 use App\Models\Ots;
-use Str;
+use Illuminate\Support\Str;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Xendit\Configuration;
@@ -30,7 +30,7 @@ class VirtualAccountChannel
                 'virtual_account' => [
                     'channel_code' => $request->payment_method,
                     'channel_properties' => [
-                        'customer_name' => $ots->event->title,
+                        'customer_name' => Str::substr($ots->organizer->parent['name'], 0, 10),
                         'expires_at' => now()->addMinutes(15)->toISOString()
                     ]
                 ]

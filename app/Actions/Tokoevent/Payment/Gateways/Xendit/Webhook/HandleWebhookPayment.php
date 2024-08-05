@@ -5,6 +5,7 @@ namespace App\Actions\Tokoevent\Payment\Gateways\Xendit\Webhook;
 use App\Actions\Tokoevent\Payment\UpdatePayment;
 use App\Enums\PaymentStatusEnum;
 use App\Models\Payment;
+use Bavix\Wallet\Models\Transaction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\ActionRequest;
@@ -17,7 +18,7 @@ class HandleWebhookPayment
     /**
      * @throws \Throwable
      */
-    public function handle(ActionRequest $request): Payment
+    public function handle(ActionRequest $request): Payment|bool
     {
         return DB::transaction(function () use ($request) {
             $attributes    = $request->input('data');
@@ -25,12 +26,20 @@ class HandleWebhookPayment
             $callbackToken = $request->header('x-callback-token');
             $webhookId     = $request->header('webhook-id');
             $status        = Arr::get($attributes, 'status');
+            $referenceId = Arr::get($attributes, 'reference_id');
 
             if ($callbackToken === config('xendit.callback')) {
-                $payment = Payment::where('reference_id', Arr::get($attributes, 'reference_id'))->first();
+                $payment = Payment::where('reference_id', $referenceId)->first();
 
                 if(!$payment) {
-                    abort(404);
+                    $referenceId = Arr::get($attributes, 'payment_method')['reference_id'];
+                    $payment = Transaction::where('uuid', $referenceId)->first();
+
+                    if($payment) {
+                        return $payment->payable->confirm($payment);
+                    } else {
+                        abort(404);
+                    }
                 }
 
                 if (blank($payment->webhook_id)) {
@@ -59,7 +68,7 @@ class HandleWebhookPayment
     /**
      * @throws \Throwable
      */
-    public function asController(ActionRequest $request): Payment
+    public function asController(ActionRequest $request): Payment|bool
     {
         return $this->handle($request);
     }

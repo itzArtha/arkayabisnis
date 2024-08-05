@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\Json;
 use App\Enums\OtsStatusEnum;
 use Bavix\Wallet\Interfaces\Wallet;
+use Bavix\Wallet\Traits\CanConfirm;
 use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Ots extends Model implements Wallet
 {
-    use HasFactory, HasWallet;
+    use HasFactory, HasWallet, CanConfirm;
 
     protected $fillable = [
         'uuid',
@@ -34,6 +35,11 @@ class Ots extends Model implements Wallet
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function organizer(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class);
     }
 
     public function payments(): MorphMany
