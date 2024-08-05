@@ -10,6 +10,7 @@ use App\Models\Payment;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -42,17 +43,6 @@ class StorePayment
 
         /** @var Payment $payment */
         $payment = $parent->payments()->create($attributes);
-
-        $payment->refresh();
-
-        $qrCode = QrisChannel::run($payment);
-
-        $payment->update([
-            'reference_id' => $qrCode['reference_id'],
-            'actions' => [
-                'qr_code' => $qrCode['qr_code']['channel_properties']['qr_string']
-            ]
-        ]);
 
         $payment->refresh();
 

@@ -100,8 +100,8 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
 
     const footerContent = (
         <div>
-            {payment.qr_code && <PrimaryButton loading={processing} disabled={processing} onClick={() => setVisible(false)} label="Tutup" icon="pi pi-times" className={"w-full"} />}
-            {!payment.qr_code && <PrimaryButton loading={processing} disabled={processing} onClick={submit} label="Checkout" icon="pi pi-check" className={"w-full"} />}
+            {payment.status && <PrimaryButton loading={processing} disabled={processing} onClick={() => setVisible(false)} label="Tutup" icon="pi pi-times" className={"w-full"} />}
+            {!payment.status && <PrimaryButton loading={processing} disabled={processing} onClick={submit} label="Checkout" icon="pi pi-check" className={"w-full"} />}
         </div>
     );
 
@@ -172,6 +172,13 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                 </div>
                             </div>
                         </div>
+
+                        {payment.status && <div className={"mt-4"}>
+                            <div className={"text-center"}>
+                                <p>Pembayaran berhasil, tiket akan dikirimkan via whatsapp</p>
+                                <Message severity="success" text="Pembayaran berhasil" />
+                            </div>
+                        </div>}
 
                         {payment.qr_code && <div className={"mt-4"}>
                             <div className={"text-center"}>

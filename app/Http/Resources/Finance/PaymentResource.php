@@ -15,10 +15,19 @@ class PaymentResource extends JsonResource
         /** @var Payment $payment */
         $payment = $this;
 
-        $qrCode = GenerateQrCode::run(Arr::get($payment->actions, 'qr_code'));
+        $paymentMethod = [];
+        if(Arr::get($payment->actions, 'qr_code')) {
+            $qrCode = GenerateQrCode::run(Arr::get($payment->actions, 'qr_code'));
+
+            $paymentMethod = [
+                'qr_code' => $qrCode,
+            ];
+        }
 
         return [
-            'qr_code' => $qrCode,
+            ...$paymentMethod,
+            'status' => $payment->status,
+            'status_label' => $payment->getStatus($payment->status),
             'expired_at' => $payment->expired_at
         ];
     }

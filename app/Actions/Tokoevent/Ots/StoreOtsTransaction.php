@@ -5,6 +5,7 @@ namespace App\Actions\Tokoevent\Ots;
 use App\Actions\Tokoevent\Finance\StoreTransaction;
 use App\Actions\Tokoevent\Participant\StoreParticipant;
 use App\Actions\Tokoevent\Payment\StorePayment;
+use App\Actions\Tokoevent\Payment\UpdatePayment;
 use App\Actions\Tokoevent\User\StoreUser;
 use App\Enums\PaymentMethodEnum;
 use App\Enums\PaymentStatusEnum;
@@ -44,6 +45,10 @@ class StoreOtsTransaction
             $participant = StoreParticipant::run($user, $request);
             StoreTransaction::run($participant, $request);
         }
+
+        UpdatePayment::run($ots, $payment);
+
+        $payment->refresh();
 
         return $payment;
     }

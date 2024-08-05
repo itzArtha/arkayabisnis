@@ -12,10 +12,16 @@ class StoreOtsCollateral
 {
     use AsAction;
 
-    public function handle(Ots $ots, ActionRequest $request): Transaction
+    public function handle(Ots $ots, ActionRequest $request): Transaction|null
     {
+        $deposit = null;
+
         if($request->type == 'topup') {
             $deposit = StoreOtsTopUp::run($ots, $request);
+        }
+
+        if($request->type == 'transfer') {
+            $deposit = StoreOtsTransfer::run($ots, $request);
         }
 
         return $deposit;
@@ -30,7 +36,7 @@ class StoreOtsCollateral
         ];
     }
 
-    public function asController(Ots $ots, ActionRequest $request): Transaction
+    public function asController(Ots $ots, ActionRequest $request): Transaction|null
     {
         $request->validate();
 

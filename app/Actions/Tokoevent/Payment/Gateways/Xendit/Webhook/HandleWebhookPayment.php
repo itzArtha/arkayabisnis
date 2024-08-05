@@ -36,7 +36,11 @@ class HandleWebhookPayment
                     $payment = Transaction::where('uuid', $referenceId)->first();
 
                     if($payment) {
-                        return $payment->payable->confirm($payment);
+                        if(in_array($status, ['PAID', 'SUCCEEDED'])) {
+                            return $payment->payable->confirm($payment);
+                        }
+
+                        return true;
                     } else {
                         abort(404);
                     }
@@ -47,7 +51,7 @@ class HandleWebhookPayment
                         'status'     => $this->checkStatus($status)
                     ];
 
-                    if($status === 'PAID') {
+                    if(in_array($status, ['PAID', 'SUCCEEDED'])) {
                         array_merge($data, ['completed_at' => now()]);
                     } else {
                         array_merge($data, ['cancelled_at' => now()]);

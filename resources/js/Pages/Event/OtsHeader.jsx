@@ -10,6 +10,7 @@ import {Button} from "primereact/button";
 import {InputNumber} from "primereact/inputnumber";
 import FormatRupiah from "@/Components/FormatRupiah";
 import { Message } from 'primereact/message';
+import InputError from "@/Components/InputError.jsx";
 
 export default function OtsHeader({ ots }) {
     const [visible, setVisible] = useState(false);
@@ -27,6 +28,13 @@ export default function OtsHeader({ ots }) {
         axios.post(route('ots.collateral.store', {ots: ots.data.id}), data)
         .then((response) => {
             setPayment(response.data)
+            setErrors({});
+
+            setTimeout(() => {
+                if(payment.confirmed) {
+                    window.location.reload();
+                }
+            }, 2000)
         }).catch((err) => {
             setErrors(err.response.data.errors);
         });
@@ -110,7 +118,11 @@ export default function OtsHeader({ ots }) {
                             <label htmlFor={'currency-id'} className="block text-900 font-medium mb-2">Jumlah</label>
                             <div>
                                 <InputNumber className={"w-full"} inputId="currency-id" value={data.amount} onValueChange={(e) => setData('amount', e.value)} mode="currency" currency="IDR" locale="id-ID" maxFractionDigits={0} />
+                                <InputError message={errors?.amount} className=""/>
                             </div>
+                        </div>
+                        <div className={"mt-2 text-center"}>
+                            {payment.confirmed && <Message severity="success" text="Transfer penghasilan berhasil" />}
                         </div>
                         {((payment.meta) && (data.type == 'topup')) && <div>
                             <p>Silakan dibayar ke nomor virtual account di bawah</p>
