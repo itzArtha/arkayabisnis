@@ -80,7 +80,6 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     };
 
     const submit = (e) => {
-
         e.preventDefault();
         setProcessing(true);
         axios.post(route('ots.transaction.store', {ots: ots.data.id}), data)

@@ -1,8 +1,8 @@
 import {Button} from "primereact/button";
 
-export default function PrimaryButton({ className = '', children, ...props }) {
+export default function PrimaryButton({ className = '', disabled, children, ...props }) {
     return (
-        <Button loadingIcon={"pi pi-spinner"} severity="warning" {...props} className={className + ` border-black border`}>
+        <Button severity="warning" loading={disabled} {...props} className={className + ` border-black border`}>
             {children}
         </Button>
     );

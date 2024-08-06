@@ -3,6 +3,10 @@
 use App\Actions\Tokoevent\Dashboard\UI\ShowDashboard;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['complete-register'])->group(function () {
         Route::get('/dashboard', ShowDashboard::class)->name('dashboard');

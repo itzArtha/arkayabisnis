@@ -3,17 +3,19 @@
 namespace App\Actions\Tokoevent\Payment;
 
 use App\Actions\Tokoevent\Payment\Gateways\Xendit\Channels\QrisChannel;
+use App\Actions\Tokoevent\Payment\Gateways\Xendit\Channels\VirtualAccountChannel;
 use App\Enums\PaymentStatusEnum;
 use App\Models\Ots;
 use App\Models\Payment;
 use Illuminate\Validation\ValidationException;
+use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class UpdatePayment
 {
     use AsAction;
 
-    public function handle(Ots $ots, Payment $payment, array $attributes = []): Payment
+    public function handle(Ots $ots, Payment $payment, ActionRequest $request): Payment
     {
         if($payment->channel === 'QRIS') {
             $qrCode = QrisChannel::run($payment);
@@ -35,6 +37,18 @@ class UpdatePayment
 
             $payment->update([
                 'status' => PaymentStatusEnum::IS_SETTLEMENT->value
+            ]);
+        } else if(in_array($payment->channel, ['BNI', 'MANDIRI', 'PERMATA', 'BRI'])) {
+            $request->merge([
+                'amount' => $payment->total,
+                'payment_method' => $payment->channel
+            ]);
+
+            $virtualAccount = VirtualAccountChannel::run($ots, $request);
+
+            $payment->update([
+                'reference_id' => $virtualAccount['reference_id'],
+                'actions' => $virtualAccount
             ]);
         }
 

@@ -46,7 +46,7 @@ class StoreOtsTransaction
             StoreTransaction::run($participant, $request);
         }
 
-        UpdatePayment::run($ots, $payment);
+        UpdatePayment::run($ots, $payment, $request);
 
         $payment->refresh();
 

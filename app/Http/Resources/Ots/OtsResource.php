@@ -23,7 +23,7 @@ class OtsResource extends JsonResource
             'total_participants' => $ots->total_participants,
             'fields' => Arr::get($ots->settings, 'fields'),
             'collateral' => $ots->wallet->balance,
-            'qr_code' => GenerateQrCode::run($ots->uuid)
+            'qr_code' => GenerateQrCode::run(route('ots.user.purchase', $ots->uuid))
         ];
     }
 }

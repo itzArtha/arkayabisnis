@@ -22,11 +22,14 @@ class PaymentResource extends JsonResource
             $paymentMethod = [
                 'qr_code' => $qrCode,
             ];
+        } else {
+            $paymentMethod = $payment->actions;
         }
 
         return [
             ...$paymentMethod,
             'status' => $payment->status,
+            'total' => $payment->total,
             'status_label' => $payment->getStatus($payment->status),
             'expired_at' => $payment->expired_at
         ];
