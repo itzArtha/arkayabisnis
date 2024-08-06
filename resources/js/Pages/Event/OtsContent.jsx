@@ -1,7 +1,5 @@
 import {Link, Head, useForm, router, usePage} from '@inertiajs/react';
 import React, {useContext, useEffect, useState} from "react";
-import Layout from '@/Layouts/layout/layout';
-import OtsWelcome from "@/Pages/Event/OtsWelcome";
 import {Toolbar} from "primereact/toolbar";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
@@ -20,12 +18,14 @@ import {Dropdown} from "primereact/dropdown";
 import {Message} from "primereact/message";
 import FormatRupiah from "@/Components/FormatRupiah.jsx";
 import {valueOrDefault} from "chart.js/helpers";
+import {Paginator} from "primereact/paginator";
 
 export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     const [visible, setVisible] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [payment, setPayment] = useState({});
     const [errors, setErrors] = useState({});
+
     const [calculation, setCalculation] = useState({
         subtotal: 0,
         admin: 0,
@@ -50,6 +50,12 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
            total: subtotal + admin
        })
     }, [data]);
+
+    const onPageChange = (event) => {
+        router.visit(route(route().current(), {
+            page: event.page + 1
+        }), { preserveScroll: true })
+    };
 
     const leftToolbarTemplate = () => {
         return <>
@@ -110,8 +116,8 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                 <Head title="Sistem OTS" />
                 <div>
                     <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-                    <DataTable value={payments?.data} rows={10} tableStyle={{ minWidth: '50rem' }}>
-                        <Column header="#" body={(data, options) => options.rowIndex + 1}></Column>
+                    <DataTable value={payments?.data} rows={payments.meta.per_page} tableStyle={{ minWidth: '50rem' }}>
+                        <Column header="#" body={(data, options) => options.rowIndex + payments.meta.from}></Column>
                         <Column field="ticket_name" header="Nama Tiket" ></Column>
                         <Column field="quantity" header="Jumlah"></Column>
                         <Column field="total" header="Total" body={(rowData) => <FormatRupiah amount={rowData.total} />}></Column>
@@ -119,6 +125,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                         <Column field="status" header="Status" body={statusFormat}></Column>
                         <Column field="created_at" header="Tanggal" body={dateFormat}></Column>
                     </DataTable>
+                    <Paginator first={payments.meta.from} rows={payments.meta.per_page} totalRecords={payments.meta.total} onPageChange={onPageChange} />
 
                     <Dialog header="Pembelian OTS" draggable={false} position={"center"} visible={visible} className={"md:w-4 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
                         <div className={"flex justify-content-center"}>

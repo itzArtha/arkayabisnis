@@ -1,7 +1,6 @@
 import { Link, Head } from '@inertiajs/react';
 import React, {useContext} from "react";
 import Layout from '@/Layouts/layout/layout';
-import { Button } from 'primereact/button';
 import Table from "@/Components/Table";
 
 export default function Participants({ participants }) {
