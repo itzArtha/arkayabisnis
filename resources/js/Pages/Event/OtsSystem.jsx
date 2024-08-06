@@ -42,7 +42,7 @@ export default function OtsSystem() {
 
     const footerContent = (
         <div>
-            <PrimaryButton onClick={submit} label="Simpan" icon="pi pi-check" className={"w-full"} />
+            <PrimaryButton loading={processing} disabled={processing} onClick={submit} label="Simpan" icon="pi pi-check" className={"w-full"} />
         </div>
     );
 

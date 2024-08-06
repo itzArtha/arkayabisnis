@@ -14,9 +14,10 @@ import InputError from "@/Components/InputError.jsx";
 
 export default function OtsHeader({ ots }) {
     const [visible, setVisible] = useState(false);
+    const [processing, setProcessing] = useState(false);
     const [payment, setPayment] = useState({});
     const [errors, setErrors] = useState({});
-    const {data, setData, post, processing, reset} = useForm({
+    const {data, setData, post, reset} = useForm({
         type: 'topup',
         amount: 0,
         payment_method: 'MANDIRI'
@@ -24,6 +25,7 @@ export default function OtsHeader({ ots }) {
 
     const submit = (e) => {
         e.preventDefault();
+        setProcessing(true);
 
         axios.post(route('ots.collateral.store', {ots: ots.data.id}), data)
         .then((response) => {
@@ -38,6 +40,8 @@ export default function OtsHeader({ ots }) {
         }).catch((err) => {
             setErrors(err.response.data.errors);
         });
+        
+        setProcessing(false);
     };
 
     const types = [
@@ -62,7 +66,7 @@ export default function OtsHeader({ ots }) {
     const footerContent = (
         <div>
             {data.type
-            && <PrimaryButton onClick={submit} label={checkType()} icon="pi pi-check" className={"w-full"} />
+            && <PrimaryButton loading={processing} disabled={processing} onClick={submit} label={checkType()} icon="pi pi-check" className={"w-full"} />
             }
         </div>
     );
