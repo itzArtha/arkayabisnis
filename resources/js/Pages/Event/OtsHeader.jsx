@@ -40,7 +40,7 @@ export default function OtsHeader({ ots }) {
         }).catch((err) => {
             setErrors(err.response.data.errors);
         });
-        
+
         setProcessing(false);
     };
 
@@ -89,7 +89,7 @@ export default function OtsHeader({ ots }) {
                 </div>
                 <div className="col-12 xl:col-6">
                     <div className="card border-0 grid relative overflow-hidden mt-0">
-                        <div className={"col-12 xl:col-6"}>
+                        <div className={"col-12 md:col-6"}>
                             <div className="flex align-items-center justify-content-between mb-3">
                                 <div className="text-900 text-xl font-semibold">QR Code Pembelian Mandiri</div>
                             </div>
@@ -103,8 +103,8 @@ export default function OtsHeader({ ots }) {
                                 }} label="QR Code" icon="pi pi-download" />
                             </div>
                         </div>
-                        <div className={"col-12 xl:col-6 flex xl:justify-content-end justify-content-center"}>
-                            <img alt="qr code" src={ots.data.qr_code} className="w-12 xl:w-8" />
+                        <div className={"col-12 md:col-6 flex xl:justify-content-end justify-content-end"}>
+                            <img alt="qr code" src={ots.data.qr_code} className="w-full md:w-8rem xl:w-12rem" />
                         </div>
                     </div>
                 </div>
