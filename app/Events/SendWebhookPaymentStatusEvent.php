@@ -43,7 +43,7 @@ class SendWebhookPaymentStatusEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('payment-status'),
+            new PresenceChannel('payment-status'),
         ];
     }
 }

@@ -50,12 +50,13 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
        })
     }, [data]);
 
-    window.Echo.channel('payment-status')
-    .listen('.SendWebhookPaymentStatusEvent', (e) => onUpdateWebhook());
+    useEffect(() => {
+        window.Echo.join('payment-status')
+        .listen('.SendWebhookPaymentStatusEvent', (e) => onUpdateWebhook());
+    }, []);
 
     const onUpdateWebhook = () => {
         toast.success("User berhasil membeli tiket");
-        router.visit(route(route().current()), { preserveScroll: true })
     }
 
     const onPageChange = (event) => {
