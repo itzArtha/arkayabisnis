@@ -3,6 +3,7 @@
 namespace App\Actions\Tokoevent\Payment\Gateways\Xendit\Webhook;
 
 use App\Actions\Tokoevent\Payment\UpdatePayment;
+use App\Actions\Tokoevent\Payment\UpdatePaymentStatus;
 use App\Enums\PaymentStatusEnum;
 use App\Events\SendWebhookPaymentStatusEvent;
 use App\Models\Payment;
@@ -59,11 +60,11 @@ class HandleWebhookPayment
                         array_merge($data, ['cancelled_at' => now()]);
                     }
 
-                    broadcast(new SendWebhookPaymentStatusEvent($payment))->toOthers();
-                    // $payment->user->notify(new SendTicketToBuyerNotification($payment));
-
                     if($payment->status !== PaymentStatusEnum::IS_SETTLEMENT->value) {
-                        //UpdatePayment::run($payment, $data);
+                        UpdatePaymentStatus::run($payment, $data);
+
+                        broadcast(new SendWebhookPaymentStatusEvent($payment))->toOthers();
+                        $payment->user->notify(new SendTicketToBuyerNotification($payment));
                     }
                 }
 

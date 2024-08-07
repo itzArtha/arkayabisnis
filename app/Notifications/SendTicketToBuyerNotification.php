@@ -48,10 +48,10 @@ class SendTicketToBuyerNotification extends Notification implements ShouldQueue
     public function toWhatsApp($notifiable)
     {
         return (new WhatsAppMessage)
-            ->content("Pesanan {$this->payment->transactions()->count()} Tiket Berhasil Dibayar. Berikut ini adalah tiket dalam bentuk QR")
-            ->media("https://tokoevent.id/wp-content/uploads/2024/07/xgp7a4S4fizfL8r36BPa8LDsbZaX59k1ovd8ykLE.png");
+            ->content("Tiket dengan jumlah 10 berhasil dibayar, silakan berikan kepada panitia QR berikut untuk discan.")
+            ->media(["https://assets-gerra.s3.ap-southeast-1.amazonaws.com/tickets/qrcode.png"]);
     }
-    
+
     public function toBroadcast(object $notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
