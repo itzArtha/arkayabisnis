@@ -15,4 +15,5 @@ Route::post('{ots}/collateral', StoreOtsCollateral::class)->name('collateral.sto
 Route::withoutMiddleware(['auth', 'complete-register'])->group(function () {
     Route::post('{ots}/transaction', StoreOtsTransaction::class)->name('transaction.store');
     Route::get('purchase/{ots:uuid}', ShowUserOtsPurchase::class)->name('user.purchase');
+    Route::get('tickets/{payment:reference_id}', ShowUserOtsPurchase::class)->name('user.tickets');
 });

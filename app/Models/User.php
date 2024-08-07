@@ -3,15 +3,9 @@
 namespace App\Models;
 
 use App\Models\Traits\WhatsAppSettingTrait;
-use Bavix\Wallet\Interfaces\Customer;
-use Bavix\Wallet\Interfaces\Wallet;
-use Bavix\Wallet\Traits\CanPay;
-use Bavix\Wallet\Traits\HasWallet;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
-use App\Notifications\SendResetPassword;
 use Illuminate\Notifications\Notifiable;
-use App\Notifications\CustomEmailVerification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Sluggable\HasSlug;

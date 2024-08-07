@@ -57,7 +57,6 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
 
     const onUpdateWebhook = (paymentWebhook) => {
         setPayment({...payment, status: paymentWebhook.status})
-        toast.success("User berhasil membeli tiket");
     }
 
     const onPageChange = (event) => {
@@ -88,10 +87,10 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
         return <Tag value={rowData.status.label} severity={rowData.status.severity} />;
     };
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         setProcessing(true);
-        axios.post(route('ots.transaction.store', {ots: ots.data.id}), data)
+        await axios.post(route('ots.transaction.store', {ots: ots.data.id}), data)
             .then((response) => {
                 setPayment(response.data.data)
             }).catch((err) => {
@@ -114,8 +113,8 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
 
     const footerContent = (
         <div>
-            {payment.status === 'settlement' && <PrimaryButton loading={processing} disabled={processing} onClick={() => setVisible(false)} label="Tutup" icon="pi pi-times" className={"w-full"} />}
-            {payment.status !== 'settlement' && <PrimaryButton loading={processing} disabled={processing} onClick={submit} label="Checkout" icon="pi pi-check" className={"w-full"} />}
+            {payment.status === 'settlement' && <PrimaryButton disabled={processing} onClick={() => setVisible(false)} label="Tutup" icon="pi pi-times" className={"w-full"} />}
+            {payment.status !== 'settlement' && <PrimaryButton disabled={processing} onClick={submit} label="Checkout" icon="pi pi-check" className={"w-full"} />}
         </div>
     );
 
@@ -195,7 +194,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                             </div>
                         </div>}
 
-                        {payment.qr_code && <div className={"mt-4"}>
+                        {(payment.qr_code && payment.status !== 'settlement') && <div className={"mt-4"}>
                             <div className={"text-center"}>
                                 <p>Silakan bayar melalui QRIS di bawah ini, tiket akan dikirimkan via whatsapp</p>
                                 <img alt="qr code" src={payment.qr_code} className="w-12 xl:w-8" />

@@ -63,8 +63,10 @@ class HandleWebhookPayment
                     if($payment->status !== PaymentStatusEnum::IS_SETTLEMENT->value) {
                         UpdatePaymentStatus::run($payment, $data);
 
+                        $payment->refresh();
+
                         broadcast(new SendWebhookPaymentStatusEvent($payment))->toOthers();
-                        $payment->user->notify(new SendTicketToBuyerNotification($payment));
+                         $payment->user->notify(new SendTicketToBuyerNotification($payment));
                     }
                 }
 
