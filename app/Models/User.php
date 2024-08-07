@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\WhatsAppSettingTrait;
 use Bavix\Wallet\Interfaces\Customer;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\CanPay;
@@ -18,7 +19,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasSlug;
+    use HasApiTokens, HasFactory, Notifiable, HasSlug, WhatsAppSettingTrait;
 
     /**
      * The attributes that are mass assignable.

@@ -5,6 +5,7 @@ namespace App\Actions\Tokoevent\Payment\Gateways\Xendit\Webhook;
 use App\Actions\Tokoevent\Payment\UpdatePayment;
 use App\Enums\PaymentStatusEnum;
 use App\Models\Payment;
+use App\Notifications\SendTicketToBuyerNotification;
 use Bavix\Wallet\Models\Transaction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -57,8 +58,10 @@ class HandleWebhookPayment
                         array_merge($data, ['cancelled_at' => now()]);
                     }
 
+                    $payment->user->notify(new SendTicketToBuyerNotification($payment));
+
                     if($payment->status !== PaymentStatusEnum::IS_SETTLEMENT->value) {
-                        UpdatePayment::run($payment, $data);
+                        //UpdatePayment::run($payment, $data);
                     }
                 }
 
