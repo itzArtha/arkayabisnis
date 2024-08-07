@@ -1,5 +1,5 @@
 import {Link, Head, useForm, router, usePage} from '@inertiajs/react';
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {Toolbar} from "primereact/toolbar";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
@@ -17,8 +17,8 @@ import {InputText} from "primereact/inputtext";
 import {Dropdown} from "primereact/dropdown";
 import {Message} from "primereact/message";
 import FormatRupiah from "@/Components/FormatRupiah.jsx";
-import {valueOrDefault} from "chart.js/helpers";
 import {Paginator} from "primereact/paginator";
+import toast from 'react-hot-toast';
 
 export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     const [visible, setVisible] = useState(false);
@@ -36,7 +36,6 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
         quantity: 0,
         ticket: '',
     });
-
     const {payments} = usePage().props
 
     useEffect(() => {
@@ -50,6 +49,14 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
            total: subtotal + admin
        })
     }, [data]);
+
+    window.Echo.channel('payment-status')
+    .listen('.SendWebhookPaymentStatusEvent', (e) => onUpdateWebhook());
+
+    const onUpdateWebhook = () => {
+        toast.success("User berhasil membeli tiket");
+        router.visit(route(route().current()), { preserveScroll: true })
+    }
 
     const onPageChange = (event) => {
         router.visit(route(route().current(), {

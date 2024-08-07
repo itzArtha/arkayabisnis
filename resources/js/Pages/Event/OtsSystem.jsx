@@ -1,5 +1,5 @@
 import {Link, Head, useForm, router, usePage} from '@inertiajs/react';
-import React, {useContext, useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import Layout from '@/Layouts/layout/layout';
 import OtsWelcome from "@/Pages/Event/OtsWelcome";
 import OtsContent from "@/Pages/Event/OtsContent.jsx";
@@ -8,6 +8,7 @@ import {Dialog} from "primereact/dialog";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import OtsHeader from "@/Pages/Event/OtsHeader";
 import InputError from "@/Components/InputError";
+import { Toast } from 'primereact/toast';
 
 export default function OtsSystem() {
     const {ots, tickets} = usePage().props;
@@ -16,6 +17,7 @@ export default function OtsSystem() {
         fields: ots?.data?.fields,
         fee: '0:100',
     });
+    const toast = useRef(null);
 
     const submit = (e) => {
         e.preventDefault();
