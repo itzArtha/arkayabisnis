@@ -29,7 +29,15 @@ class HandleWebhookPayment
             $callbackToken = $request->header('x-callback-token');
             $webhookId     = $request->header('webhook-id');
             $status        = Arr::get($attributes, 'status');
-            $referenceId = Arr::get($attributes, 'reference_id');
+
+
+            $paymentMethod = Arr::get($attributes, 'payment_method');
+
+            if(!$paymentMethod) {
+                $referenceId = Arr::get($attributes, 'reference_id');
+            } else {
+                $referenceId = Arr::get($paymentMethod, 'reference_id');
+            }
 
             if ($callbackToken === config('xendit.callback')) {
                 $payment = Payment::where('reference_id', $referenceId)->first();
