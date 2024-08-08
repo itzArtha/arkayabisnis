@@ -3,6 +3,7 @@
 namespace App\Actions\Helpers;
 
 use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\RoundBlockSizeMode;
@@ -21,6 +22,8 @@ class GenerateQrCode
             ->errorCorrectionLevel(ErrorCorrectionLevel::High)
             ->size(300)
             ->margin(10)
+            ->logoPath(public_path('/images/logo/barcode.png'))
+            ->logoResizeToWidth(120)
             ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
             ->validateResult(false)
             ->build()
