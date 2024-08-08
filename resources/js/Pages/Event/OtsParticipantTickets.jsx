@@ -32,7 +32,7 @@ export default function OtsParticipantTicket({participants}) {
                             <div className="text-900 text-3xl font-medium mb-1">Halo, ini dia tiketmu 🎫</div>
                             <p className={"text-400 mb-4"}>Berikan QR kepada panitia untuk scan tiket</p>
                             
-{participants?.data?.map((item) => (<div className="cursor-pointer card flex flex-wrap p-2 align-items-center gap-3" onClick={() => setShowQrCode({visible: true, qr_code: item.qr_code, ticket_number: item.ticket_number})}>
+            {participants?.data?.map((item) => (<div className="cursor-pointer card flex flex-wrap p-2 align-items-center gap-3" onClick={() => setShowQrCode({visible: true, qr_code: item.qr_code, ticket_number: item.ticket_number})}>
                 <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={item.qr_code} alt={item.ticket_name} />
                 <div className="flex-1 flex flex-column gap-2 xl:mr-8">
                     <span className="font-bold">{item.ticket_name}</span>
