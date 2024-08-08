@@ -51,12 +51,12 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     }, [data]);
 
     useEffect(() => {
-        window.Echo.join(`payment-status.${payment.id}`)
-        .listen('.SendWebhookPaymentStatusEvent', (e) => onUpdateWebhook(e.payment));
+        window.Echo.join(`payment-status.${ots.data.id}`)
+        .listen('.SendWebhookPaymentStatusEvent', (e) => onUpdateWebhook(e));
     }, []);
 
     const onUpdateWebhook = (paymentWebhook) => {
-        setPayment({...payment, status: paymentWebhook.status})
+        toast.success(`Pembayaran sebesar ${paymentWebhook.total} berhasil`);
     }
 
     const onPageChange = (event) => {

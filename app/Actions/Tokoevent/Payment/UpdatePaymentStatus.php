@@ -17,11 +17,11 @@ class UpdatePaymentStatus
         $payment->update($request);
 
         if($payment->status === PaymentStatusEnum::IS_SETTLEMENT->value) {
-            $participant = UpdateParticipant::run($payment->user, [
+            UpdateParticipant::run($payment->user, [
                 'status' => $payment->status
             ]);
 
-            UpdateTransaction::run($participant, [
+            UpdateTransaction::run($payment, [
                 'status' => $payment->status
             ]);
         }

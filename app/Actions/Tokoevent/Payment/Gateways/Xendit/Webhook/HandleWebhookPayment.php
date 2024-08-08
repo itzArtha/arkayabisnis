@@ -66,7 +66,7 @@ class HandleWebhookPayment
                         $payment->refresh();
 
                         broadcast(new SendWebhookPaymentStatusEvent($payment))->toOthers();
-                         $payment->user->notify(new SendTicketToBuyerNotification($payment));
+                        // $payment->user->notify(new SendTicketToBuyerNotification($payment));
                     }
                 }
 

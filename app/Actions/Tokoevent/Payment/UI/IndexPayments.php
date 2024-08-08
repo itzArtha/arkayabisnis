@@ -2,6 +2,7 @@
 
 namespace App\Actions\Tokoevent\Payment\UI;
 
+use App\Enums\PaymentStatusEnum;
 use App\Http\Resources\Event\ParticipantsResource;
 use App\Models\Ots;
 use App\Models\Payment;
@@ -25,6 +26,7 @@ class IndexPayments
 
         $query = QueryBuilder::for($parent ? $parent->payments() : Payment::class);
 
+        $query->where('status', PaymentStatusEnum::IS_SETTLEMENT->value);
         $query->with('transactions');
 
         return $query->defaultSort('-id')

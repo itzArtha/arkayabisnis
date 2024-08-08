@@ -43,7 +43,7 @@ class SendWebhookPaymentStatusEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PresenceChannel('payment-status'),
+            new PresenceChannel('payment-status.'.$this->payment->sourceable_id)
         ];
     }
 }

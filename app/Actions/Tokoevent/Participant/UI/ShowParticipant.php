@@ -25,11 +25,12 @@ class ShowParticipant
 
         $query = QueryBuilder::for($parent->transactions());
 
-        $query->with('participant');
-        $query->whereNotNull('reference');
+        $query->with(['participant' => function($q) {
+            $q->whereNotNull('reference');
+        }]);
 
-        return $query->defaultSort('-reference')
-        ->allowedSorts(['reference'])
+        return $query->defaultSort('-id')
+        ->allowedSorts(['id'])
         ->allowedFilters([$globalSearch])
         ->withPaginator()
         ->withQueryString();
@@ -40,10 +41,15 @@ class ShowParticipant
         return $this->handle($payment, $request);
     }
 
-    public function htmlResponse(LengthAwarePaginator $participants): Response
+    public function fromPayment(Payment $payment, ActionRequest $request): LengthAwarePaginator
     {
-        return Inertia::render('Ots/Tickets', [
-            'participants' => ParticipantsResource::collection($participants)
+        return $this->handle($payment, $request);
+    }
+
+    public function htmlResponse(LengthAwarePaginator $transactions): Response
+    {
+        return Inertia::render('Event/OtsParticipantTickets', [
+            'participants' => ParticipantsResource::collection($transactions)
         ]);
     }
 }
