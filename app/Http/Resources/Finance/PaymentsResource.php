@@ -19,6 +19,7 @@ class PaymentsResource extends JsonResource
 
         return [
             'ticket_name' => $transaction?->ticket?->title,
+            'buyer_phone' => $payment->user->phone,
             'quantity' => $payment->transactions()->count(),
             'total' => $payment->total,
             'channel' => $payment->channel,

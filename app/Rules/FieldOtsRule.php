@@ -15,8 +15,8 @@ class FieldOtsRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if(!in_array('whatsapp', $value) && !in_array('email', $value)) {
-            $fail('Kamu wajib menggunakan salah satu antara email atau whatsapp');
+        if(!in_array('whatsapp', $value)) {
+            $fail('Kamu wajib menggunakan whatsapp, untuk notifikasi pengiriman tiket');
         }
     }
 }

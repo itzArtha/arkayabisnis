@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/webhook-test', function (Request $request) {
+    $payment = Payment::where('sourceable_id', 4)->first();
+    // $payment->user->notify(new SendTicketToBuyerNotification($payment));
+    broadcast(new \App\Events\SendWebhookPaymentStatusEvent($payment))->toOthers();
 });

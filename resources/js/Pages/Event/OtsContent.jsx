@@ -57,6 +57,8 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
 
     const onUpdateWebhook = (paymentWebhook) => {
         toast.success(`Pembayaran sebesar ${paymentWebhook.total} berhasil`);
+
+        setPayment(paymentWebhook);
     }
 
     const onPageChange = (event) => {
@@ -126,6 +128,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                     <DataTable value={payments?.data} rows={payments.meta.per_page} tableStyle={{ minWidth: '50rem' }}>
                         <Column header="#" body={(data, options) => options.rowIndex + payments.meta.from}></Column>
                         <Column field="ticket_name" header="Nama Tiket" ></Column>
+                        <Column field="buyer_phone" header="No. Whatsapp" ></Column>
                         <Column field="quantity" header="Jumlah"></Column>
                         <Column field="total" header="Total" body={(rowData) => <FormatRupiah amount={rowData.total} />}></Column>
                         <Column field="channel" header="Pembayaran"></Column>

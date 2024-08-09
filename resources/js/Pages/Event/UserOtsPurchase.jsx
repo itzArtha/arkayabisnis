@@ -11,6 +11,7 @@ import {SelectButton} from "primereact/selectbutton";
 import {Message} from "primereact/message";
 import FormatRupiah from "@/Components/FormatRupiah.jsx";
 import {Dialog} from "primereact/dialog";
+import toast from "react-hot-toast";
 
 export default function Login({ots, tickets}) {
     const [visible, setVisible] = useState(false);
@@ -54,6 +55,19 @@ export default function Login({ots, tickets}) {
         });
         setProcessing(false);
     };
+
+    useEffect(() => {
+        window.Echo.join(`payment-status.${ots.data.id}`)
+            .listen('.SendWebhookPaymentStatusEvent', (e) => onUpdateWebhook(e));
+    }, []);
+
+    const onUpdateWebhook = (paymentWebhook) => {
+        toast.success(`Pembayaran berhasil`);
+
+        setTimeout(() => {
+            window.location.href = route('ots.user.tickets', paymentWebhook.reference_id);
+        }, 1000)
+    }
 
     const payment_methods = [
         { name: 'BNI', value: 'BNI' },

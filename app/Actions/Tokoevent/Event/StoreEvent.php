@@ -29,7 +29,10 @@ class StoreEvent
 
         $event->ots()->create([
             'uuid' => Str::uuid(),
-            'organizer_id' => $user->organizer->id
+            'organizer_id' => $user->organizer->id,
+            'settings' => [
+                'fields' => ['whatsapp']
+            ]
         ]);
 
         $user->update([
