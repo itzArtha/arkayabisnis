@@ -17,7 +17,7 @@ class UpdateTransaction
         $payment->transactions()->update($request);
 
         foreach($payment->transactions as $transaction) {
-            if($transaction->status === PaymentStatusEnum::IS_SETTLEMENT->value) {
+            if(($transaction->status === PaymentStatusEnum::IS_SETTLEMENT->value) && ($payment->channel !== 'CASH')) {
                 $revenue = Revenue::create([
                     'transaction_id' => $transaction->id,
                     'organization_id' => $transaction->ticket->event->organizer_id,
