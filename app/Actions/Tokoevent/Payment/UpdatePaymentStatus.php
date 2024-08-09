@@ -5,7 +5,9 @@ namespace App\Actions\Tokoevent\Payment;
 use App\Actions\Tokoevent\Finance\UpdateTransaction;
 use App\Actions\Tokoevent\Participant\UpdateParticipant;
 use App\Enums\PaymentStatusEnum;
+use App\Events\SendWebhookPaymentStatusEvent;
 use App\Models\Payment;
+use App\Notifications\SendTicketToBuyerNotification;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class UpdatePaymentStatus
@@ -16,7 +18,7 @@ class UpdatePaymentStatus
     {
         $payment->update($request);
 
-        if($payment->status === PaymentStatusEnum::IS_SETTLEMENT->value) {
+        if(in_array($payment->status, [PaymentStatusEnum::IS_SETTLEMENT->value, PaymentStatusEnum::IS_EXPIRE->value])) {
             UpdateParticipant::run($payment->user, [
                 'status' => $payment->status
             ]);
@@ -24,6 +26,11 @@ class UpdatePaymentStatus
             UpdateTransaction::run($payment, [
                 'status' => $payment->status
             ]);
+
+            if($payment->status === PaymentStatusEnum::IS_SETTLEMENT->value) {
+                broadcast(new SendWebhookPaymentStatusEvent($payment))->toOthers();
+                $payment->user->notify(new SendTicketToBuyerNotification($payment));
+            }
         }
 
         return $payment;

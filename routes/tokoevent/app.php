@@ -1,10 +1,14 @@
 <?php
 
 use App\Actions\Tokoevent\Dashboard\UI\ShowDashboard;
+use App\Models\Payment;
+use App\Notifications\SendTicketToBuyerNotification;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    $payment = Payment::first();
+    $payment->user->notify(new SendTicketToBuyerNotification($payment));
+    // return redirect()->route('login');
 });
 
 Route::middleware(['auth'])->group(function () {
