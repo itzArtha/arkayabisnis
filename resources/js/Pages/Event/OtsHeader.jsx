@@ -1,8 +1,5 @@
 import {Link, Head, useForm, router} from '@inertiajs/react';
-import React, {useContext, useState} from "react";
-import Layout from '@/Layouts/layout/layout';
-import OtsWelcome from "@/Pages/Event/OtsWelcome";
-import OtsContent from "@/Pages/Event/OtsContent.jsx";
+import React, {useContext, useState, useEffect} from "react";
 import {SelectButton} from "primereact/selectbutton";
 import {Dialog} from "primereact/dialog";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
@@ -11,6 +8,7 @@ import {InputNumber} from "primereact/inputnumber";
 import FormatRupiah from "@/Components/FormatRupiah";
 import { Message } from 'primereact/message';
 import InputError from "@/Components/InputError.jsx";
+import toast from "react-hot-toast";
 
 export default function OtsHeader({ ots }) {
     const [visible, setVisible] = useState(false);
@@ -43,6 +41,19 @@ export default function OtsHeader({ ots }) {
 
         setProcessing(false);
     };
+
+    useEffect(() => {
+        window.Echo.join(`topup-status.${ots.data.id}`)
+            .listen('.SendWebhookTopupStatusEvent', (e) => onUpdateWebhook(e));
+    }, []);
+
+    const onUpdateWebhook = () => {
+        toast.success(`Topup berhasil`);
+
+        setTimeout(() => {
+            window.location.href = route('ots.index');
+        }, 2000)
+    }
 
     const types = [
         { name: 'Top Up', value: 'topup' },

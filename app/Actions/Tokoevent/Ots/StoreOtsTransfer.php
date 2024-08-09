@@ -3,6 +3,7 @@
 namespace App\Actions\Tokoevent\Ots;
 
 use App\Actions\Tokoevent\Payment\Gateways\Xendit\Channels\VirtualAccountChannel;
+use App\Events\SendWebhookTopupStatusEvent;
 use App\Models\Ots;
 use App\Rules\FieldOtsRule;
 use Bavix\Wallet\Models\Transaction;
@@ -25,7 +26,10 @@ class StoreOtsTransfer
         }
 
         $transfer = $organizer->transfer($ots, $request->amount);
+        $result = $transfer->deposit;
 
-        return $transfer->deposit;
+        broadcast(new SendWebhookTopupStatusEvent($result));
+
+        return $result;
     }
 }

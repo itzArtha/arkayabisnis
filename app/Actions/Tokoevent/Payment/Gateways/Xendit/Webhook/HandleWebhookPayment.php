@@ -6,6 +6,7 @@ use App\Actions\Tokoevent\Payment\UpdatePayment;
 use App\Actions\Tokoevent\Payment\UpdatePaymentStatus;
 use App\Enums\PaymentStatusEnum;
 use App\Events\SendWebhookPaymentStatusEvent;
+use App\Events\SendWebhookTopupStatusEvent;
 use App\Models\Payment;
 use App\Notifications\SendTicketToBuyerNotification;
 use Bavix\Wallet\Models\Transaction;
@@ -48,7 +49,11 @@ class HandleWebhookPayment
 
                     if($payment) {
                         if(in_array($status, ['PAID', 'SUCCEEDED'])) {
-                            return $payment->payable->confirm($payment);
+                            $result = $payment->payable->confirm($payment);
+
+                            broadcast(new SendWebhookTopupStatusEvent($result))->toOthers();
+
+                            return $result;
                         }
 
                         return true;

@@ -20,3 +20,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('payment-status.{id}', function () {
     return true;
 });
+
+Broadcast::channel('topup-status.{id}', function () {
+    return true;
+});

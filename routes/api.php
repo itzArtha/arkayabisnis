@@ -15,8 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/webhook-test', function (Request $request) {
+Route::post('/payment-webhook-test', function (Request $request) {
     $payment = Payment::where('sourceable_id', 4)->first();
     // $payment->user->notify(new SendTicketToBuyerNotification($payment));
     broadcast(new \App\Events\SendWebhookPaymentStatusEvent($payment))->toOthers();
+});
+
+Route::post('/topup-webhook-test', function (Request $request) {
+    $payment = \Bavix\Wallet\Models\Transaction::where('payable_id', 4)->first();
+    // $payment->user->notify(new SendTicketToBuyerNotification($payment));
+    broadcast(new \App\Events\SendWebhookTopupStatusEvent($payment))->toOthers();
 });
