@@ -12,6 +12,7 @@ import {Message} from "primereact/message";
 import FormatRupiah from "@/Components/FormatRupiah.jsx";
 import {Dialog} from "primereact/dialog";
 import toast from "react-hot-toast";
+import React from "@types/react";
 
 export default function Login({ots, tickets}) {
     const [visible, setVisible] = useState(false);
@@ -21,6 +22,7 @@ export default function Login({ots, tickets}) {
     const [calculation, setCalculation] = useState({
         subtotal: 0,
         admin: 0,
+        transaction: 0,
         total: 0,
     });
     const {data, setData, reset} = useForm({
@@ -29,16 +31,16 @@ export default function Login({ots, tickets}) {
         ticket: '',
     });
 
-    const {payments} = usePage().props
-
     useEffect(() => {
         let subtotal = (data.ticket?.price ?? 0) * data.quantity;
         let admin = data.ticket?.price === 0 ? 0 : 5000 * data.quantity;
+        let transaction = 4000;
 
         setCalculation({
             ...calculation,
             subtotal: subtotal,
             admin: admin,
+            transaction: transaction,
             total: subtotal + admin
         })
     }, [data]);
@@ -138,6 +140,9 @@ export default function Login({ots, tickets}) {
                                             </div>
                                             <div className={"mb-1"}>
                                                 <span className="text-900 text-md font-semibold">Biaya Admin: {<FormatRupiah amount={calculation.admin} />}</span>
+                                            </div>
+                                            <div className={"mb-1"}>
+                                                <span className="text-900 text-md font-semibold">Biaya Transaksi: {<FormatRupiah amount={calculation.transaction} />}</span>
                                             </div>
                                             <div className={"mb-1"}>
                                                 <span className="text-red-500 text-md font-semibold">Total: {<FormatRupiah amount={calculation.total} />}</span>

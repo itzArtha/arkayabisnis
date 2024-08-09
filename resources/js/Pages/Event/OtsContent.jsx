@@ -29,6 +29,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     const [calculation, setCalculation] = useState({
         subtotal: 0,
         admin: 0,
+        transaction: 0,
         total: 0,
     });
     const {data, setData, reset} = useForm({
@@ -41,12 +42,14 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
     useEffect(() => {
         let subtotal = (data.ticket?.price ?? 0) * data.quantity;
         let admin = data.ticket?.price === 0 ? 0 : 5000 * data.quantity;
+        let transaction = data.payment_methods === 'QRIS' ? subtotal > 100000 ? 1000 : 0 : 0;
 
        setCalculation({
            ...calculation,
            subtotal: subtotal,
            admin: admin,
-           total: subtotal + admin
+           transaction: transaction,
+           total: subtotal + admin + transaction
        })
     }, [data]);
 
@@ -183,6 +186,9 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                     </div>
                                     <div className={"mb-1"}>
                                         <span className="text-900 text-md font-semibold">Biaya Admin: {<FormatRupiah amount={calculation.admin} />}</span>
+                                    </div>
+                                    <div className={"mb-1"}>
+                                        <span className="text-900 text-md font-semibold">Biaya Transaksi: {<FormatRupiah amount={calculation.transaction} />}</span>
                                     </div>
                                     <div className={"mb-1"}>
                                         <span className="text-red-500 text-md font-semibold">Total: {<FormatRupiah amount={calculation.total} />}</span>

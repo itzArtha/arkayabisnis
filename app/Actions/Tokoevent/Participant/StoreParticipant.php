@@ -13,10 +13,10 @@ class StoreParticipant
 {
     use AsAction;
 
-    public function handle(User $user, ActionRequest $request): Participant
+    public function handle(User $user, array $attributes): Participant
     {
         /** @var Participant $participant */
-        $participant = $user->participants()->create($request->all());
+        $participant = $user->participants()->create($attributes);
 
         return $participant;
     }

@@ -42,8 +42,19 @@ class StoreOtsTransaction
         ]);
 
         for ($qty = 1; $qty <= $quantity; $qty++) {
-            $participant = StoreParticipant::run($user, $request);
-            StoreTransaction::run($participant, $request);
+            $participant = StoreParticipant::run($user, [
+                'status' => $payment->status,
+                'ticket_id' => $ticket->id,
+                'event_id' => $ticket->event_id
+            ]);
+
+            StoreTransaction::run($participant, [
+                'status' => $payment->status,
+                'ticket_id' => $ticket->id,
+                'payment_id' => $payment->id,
+                'amount' => 1,
+                'subtotal' => $ticket->price
+            ]);
         }
 
         UpdatePayment::run($ots, $payment, $request);

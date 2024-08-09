@@ -17,6 +17,11 @@ class Transaction extends Model
         'status',
     ];
 
+    protected $casts = [
+        'amount' => 'integer',
+        'subtotal' => 'integer',
+    ];
+
     public function ticket()
     {
         return $this->belongsTo(Ticket::class, 'ticket_id')->withTrashed();

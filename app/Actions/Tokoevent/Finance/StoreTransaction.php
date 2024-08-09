@@ -14,10 +14,10 @@ class StoreTransaction
 {
     use AsAction;
 
-    public function handle(Participant $participant, ActionRequest $request): Transaction
+    public function handle(Participant $participant, array $attributes): Transaction
     {
         /** @var Transaction $transaction */
-        $transaction = $participant->transaction()->create($request->all());
+        $transaction = $participant->transaction()->create($attributes);
 
         return $transaction;
     }
