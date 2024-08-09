@@ -3,7 +3,9 @@
 namespace App\Actions\Tokoevent\Finance;
 
 use App\Actions\Tokoevent\Participant\UpdateParticipant;
+use App\Enums\PaymentStatusEnum;
 use App\Models\Payment;
+use App\Models\Revenue;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class UpdateTransaction
@@ -15,6 +17,17 @@ class UpdateTransaction
         $payment->transactions()->update($request);
 
         foreach($payment->transactions as $transaction) {
+            if($transaction->status === PaymentStatusEnum::IS_SETTLEMENT->value) {
+                $revenue = Revenue::create([
+                    'transaction_id' => $transaction->id,
+                    'organization_id' => $transaction->ticket->event->organizer_id,
+                    'amount' => $transaction->subtotal,
+                    'status' => $transaction->status
+                ]);
+
+                $revenue->organization->organizer->deposit($transaction->amount);
+            }
+
             UpdateParticipant::run($transaction->participant, [
                 'status' => $payment->status
             ]);
