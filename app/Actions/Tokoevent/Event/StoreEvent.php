@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Str;
 
 class StoreEvent
 {
@@ -27,6 +28,7 @@ class StoreEvent
         ]);
 
         $event->ots()->create([
+            'uuid' => Str::uuid(),
             'organizer_id' => $user->organizer->id
         ]);
 

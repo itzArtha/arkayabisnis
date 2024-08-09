@@ -29,7 +29,7 @@ class StoreUser
                 ->orWhere('phone', Arr::get($attributes, 'phone'))->first();
 
                 if($user) {   
-                    $user->update($attributes);
+                    $user->update(Arr::except($attributes, ['password']));
                     
                     return $user->refresh();
                 }
@@ -42,8 +42,8 @@ class StoreUser
     {
         return [
             'name' => ['nullable', 'string'],
-            'email' => ['nullable', 'string'],
-            'phone' => ['required', 'string'],
+            'email' => ['nullable', 'email'],
+            'phone' => ['required', 'integer'],
             'password' => ['required', 'string']
         ];
     }
@@ -55,7 +55,7 @@ class StoreUser
                 ?? 'ots buyer',
             'email' => $request->input('email')
                 ?? Str::random(8).'-ots-buyer@tokoevent.id',
-            'phone' => $request->input('whatsapp'),
+            'phone' => Str::substr($request->input('whatsapp'), 1),
             'password' => Str::random(8)
         ]);
     }

@@ -82,18 +82,18 @@ export default function Login({status, canResetPassword, heroImage}) {
                                         <InputError message={errors.password} className=""/>
                                     </div>
 
-                                    <div className="flex align-items-center justify-content-end mb-6">
+                                    {/* <div className="flex align-items-center justify-content-end mb-6">
                                         <Link
                                             href={route('password.request')}
                                             className="font-medium underline ml-2 text-900 text-right cursor-pointer"
                                         >
                                             Lupa password?
                                         </Link>
-                                    </div>
+                                    </div> */}
 
                                     <div>
                                         <PrimaryButton label="Masuk" icon="pi pi-sign-in" className="w-full mb-2" disabled={processing}/>
-                                        <Button label='Masuk Dengan Google' className='w-full' icon="pi pi-google" outlined />
+                                        {/* <Button label='Masuk Dengan Google' className='w-full' icon="pi pi-google" outlined /> */}
                                     </div>
                                 </div>
                             </form>

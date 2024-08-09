@@ -8,10 +8,10 @@ const AppMenu = () => {
         {
             label: 'Tokoevent',
             items: [
-                { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: route('dashboard') },
-                { label: 'Peserta', value: 120, icon: 'pi pi-fw pi-users', to: route('participants.index') },
+                // { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: route('dashboard') },
+                // { label: 'Peserta', value: 120, icon: 'pi pi-fw pi-users', to: route('participants.index') },
                 { label: 'OTS System', icon: 'pi pi-fw pi-dollar', to: route('ots.index') },
-                { label: 'Keuangan', icon: 'pi pi-fw pi-credit-card', to: route('finance.index') },
+                // { label: 'Keuangan', icon: 'pi pi-fw pi-credit-card', to: route('finance.index') },
                 // { label: 'Pengaturan Event', icon: 'pi pi-fw pi-cog', to: route('button') },
             ]
         }

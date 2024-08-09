@@ -100,7 +100,7 @@ export default function CreateAccount({heroImage})
                     </div>
                     <div className='mt-6'>
                         <PrimaryButton label="Buat Akun" icon={"pi pi-user-plus"} className="w-full mb-2" disabled={processing}/>
-                        <Button label='Daftar Dengan Google' className='w-full' icon="pi pi-google" outlined />
+                        {/* <Button label='Daftar Dengan Google' className='w-full' icon="pi pi-google" outlined /> */}
                     </div>
                 </div>
             </form>

@@ -145,6 +145,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                             id={item}
                                             type="text"
                                             className="w-full"
+                                            placeholder={item === 'whatsapp' ? '081237123456' : ''}
                                             value={data[item]}
                                             onChange={(e) => setData(item, e.target.value)}
                                         />
