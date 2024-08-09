@@ -19,10 +19,6 @@ class UpdatePaymentStatus
         $payment->update($request);
 
         if(in_array($payment->status, [PaymentStatusEnum::IS_SETTLEMENT->value, PaymentStatusEnum::IS_EXPIRE->value])) {
-            UpdateParticipant::run($payment->user, [
-                'status' => $payment->status
-            ]);
-
             UpdateTransaction::run($payment, [
                 'status' => $payment->status
             ]);
