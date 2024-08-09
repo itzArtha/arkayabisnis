@@ -25,7 +25,7 @@ class UpdateParticipant
             $participantQuery = $participant;
 
             $ticket = Ticket::find($participantQuery->first()->ticket_id);
-            $participantSettlementCount = Participant::where([['status', PaymentStatusEnum::IS_SETTLEMENT], ['event_id', $participantQuery->first()->event_id]])->count();
+            $participantSettlementCount = Participant::where([['status', PaymentStatusEnum::IS_SETTLEMENT->value], ['event_id', $participantQuery->first()->event_id]])->count();
             $numberReference = $ticket->start_no + $participantSettlementCount + 1;
             $length = 4;
 
@@ -34,13 +34,13 @@ class UpdateParticipant
             $participantQuery->update([
                 'status' => $status,
                 'uuid' => Str::uuid(),
-                'reference' => $status == PaymentStatusEnum::IS_SETTLEMENT ? $customNumber : null,
+                'reference' => $status == PaymentStatusEnum::IS_SETTLEMENT->value ? $customNumber : null,
             ]);
 
             $participant->refresh();
 
             if($participant->ticket->type == Ticket::IS_CINEMA) {
-                if($status == PaymentStatusEnum::IS_SETTLEMENT) {
+                if($status == PaymentStatusEnum::IS_SETTLEMENT->value) {
                     $participant->seat()->update([
                         'booked_at' => now(),
                         'expired_at' => null
