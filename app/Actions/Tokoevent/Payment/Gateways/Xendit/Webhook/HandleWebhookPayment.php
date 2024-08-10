@@ -51,7 +51,7 @@ class HandleWebhookPayment
                         if(in_array($status, ['PAID', 'SUCCEEDED'])) {
                             $result = $payment->payable->confirm($payment);
 
-                            broadcast(new SendWebhookTopupStatusEvent($result))->toOthers();
+                            broadcast(new SendWebhookTopupStatusEvent($payment))->toOthers();
 
                             return $result;
                         }

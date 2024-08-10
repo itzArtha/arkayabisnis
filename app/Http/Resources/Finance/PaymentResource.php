@@ -15,7 +15,6 @@ class PaymentResource extends JsonResource
         /** @var Payment $payment */
         $payment = $this;
 
-        $paymentMethod = [];
         if(Arr::get($payment->actions, 'qr_code')) {
             $qrCode = GenerateQrCode::run(Arr::get($payment->actions, 'qr_code'));
 
@@ -23,7 +22,7 @@ class PaymentResource extends JsonResource
                 'qr_code' => $qrCode,
             ];
         } else {
-            $paymentMethod = $payment->actions;
+            $paymentMethod = $payment->actions ?? [];
         }
 
         return [
