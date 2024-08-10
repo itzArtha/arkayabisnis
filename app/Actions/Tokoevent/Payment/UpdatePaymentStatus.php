@@ -16,7 +16,12 @@ class UpdatePaymentStatus
 
     public function handle(Payment $payment, array $request): Payment
     {
+        if($payment->status === PaymentStatusEnum::IS_SETTLEMENT->value) {
+            return $payment;
+        }
+
         $payment->update($request);
+        $payment->refresh();
 
         if(in_array($payment->status, [PaymentStatusEnum::IS_SETTLEMENT->value, PaymentStatusEnum::IS_EXPIRE->value])) {
             UpdateTransaction::run($payment, [
