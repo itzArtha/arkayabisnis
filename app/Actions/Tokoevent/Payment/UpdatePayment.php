@@ -34,7 +34,7 @@ class UpdatePayment
             ]);
 
             UpdatePaymentStatus::run($payment, [
-                'status' => $payment->status
+                'status' => PaymentStatusEnum::IS_SETTLEMENT->value
             ]);
         } else if(in_array($payment->channel, ['BNI', 'MANDIRI', 'PERMATA', 'BRI'])) {
             $request->merge([
