@@ -12,7 +12,6 @@ import {Message} from "primereact/message";
 import FormatRupiah from "@/Components/FormatRupiah.jsx";
 import {Dialog} from "primereact/dialog";
 import toast from "react-hot-toast";
-import React from "@types/react";
 
 export default function Login({ots, tickets}) {
     const [visible, setVisible] = useState(false);
