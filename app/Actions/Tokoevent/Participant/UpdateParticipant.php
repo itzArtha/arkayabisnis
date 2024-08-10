@@ -24,8 +24,8 @@ class UpdateParticipant
         try {
             $participantQuery = $participant;
 
-            $ticket = Ticket::find($participantQuery->first()->ticket_id);
-            $participantSettlementCount = Participant::where([['status', PaymentStatusEnum::IS_SETTLEMENT->value], ['event_id', $participantQuery->first()->event_id]])->count();
+            $ticket = Ticket::find($participantQuery->ticket_id);
+            $participantSettlementCount = Participant::where([['status', PaymentStatusEnum::IS_SETTLEMENT->value], ['event_id', $participantQuery->event_id]])->count();
             $numberReference = $ticket->start_no + $participantSettlementCount + 1;
             $length = 4;
 
