@@ -25,7 +25,6 @@ class UpdatePaymentStatus
 
             if($payment->status === PaymentStatusEnum::IS_SETTLEMENT->value) {
                 broadcast(new SendWebhookPaymentStatusEvent($payment))->toOthers();
-                // $payment->user->notify(new SendTicketToBuyerNotification($payment));
             }
         }
 

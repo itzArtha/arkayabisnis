@@ -22,7 +22,8 @@ class StorePayment
     public function handle(Ots $parent, User $user, Ticket $ticket, $quantity, $channel): Payment
     {
         $subtotal = $ticket->price * $quantity;
-        $conveniencefee = 5000 * $quantity;
+        $fee = $subtotal == 0 ? 0 : 5000;
+        $conveniencefee = $fee * $quantity;
 
         if($channel == PaymentMethodEnum::QRIS->value) {
             $transactionFee = $subtotal > 100000 ? 1000 : 0;
@@ -34,6 +35,10 @@ class StorePayment
 
         $total = $subtotal + $conveniencefee + $transactionFee;
         $uuid = Str::uuid();
+
+        if($channel === PaymentMethodEnum::CASH->value &&$parent->balance < $total) {
+            throw ValidationException::withMessages(['payment_methods' => 'Saldo jaminan tidak cukup, silakan topup/transfer']);
+        }
 
         $attributes = [
             'reference_id' => $uuid,

@@ -4,7 +4,9 @@ namespace App\Actions\Tokoevent\Payment;
 
 use App\Actions\Tokoevent\Payment\Gateways\Xendit\Channels\QrisChannel;
 use App\Actions\Tokoevent\Payment\Gateways\Xendit\Channels\VirtualAccountChannel;
+use App\Enums\PaymentMethodEnum;
 use App\Enums\PaymentStatusEnum;
+use App\Events\SendWebhookPaymentStatusEvent;
 use App\Models\Ots;
 use App\Models\Payment;
 use Illuminate\Validation\ValidationException;
@@ -17,7 +19,7 @@ class UpdatePayment
 
     public function handle(Ots $ots, Payment $payment, ActionRequest $request): Payment
     {
-        if($payment->channel === 'QRIS') {
+        if($payment->channel === PaymentMethodEnum::QRIS->value) {
             $qrCode = QrisChannel::run($payment);
             $payment->update([
                 'reference_id' => $qrCode['reference_id'],
@@ -25,11 +27,7 @@ class UpdatePayment
                     'qr_code' => $qrCode['qr_code']['channel_properties']['qr_string']
                 ]
             ]);
-        } else if($payment->channel === 'CASH') {
-            if($ots->balance < $payment->total) {
-                throw ValidationException::withMessages(['payment_methods' => 'Saldo jaminan tidak cukup, silakan topup/transfer']);
-            }
-
+        } else if($payment->channel === PaymentMethodEnum::CASH->value) {
             $ots->withdraw($payment->total, [
                 'reference_id' => $payment->reference_id,
                 'description' => 'Payment for ' . $payment->user->name
@@ -38,6 +36,8 @@ class UpdatePayment
             $payment->update([
                 'status' => PaymentStatusEnum::IS_SETTLEMENT->value
             ]);
+
+            event(new SendWebhookPaymentStatusEvent($payment));
         } else if(in_array($payment->channel, ['BNI', 'MANDIRI', 'PERMATA', 'BRI'])) {
             $request->merge([
                 'amount' => $payment->total,
