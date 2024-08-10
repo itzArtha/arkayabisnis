@@ -33,11 +33,9 @@ class UpdatePayment
                 'description' => 'Payment for ' . $payment->user->name
             ]);
 
-            $payment->update([
-                'status' => PaymentStatusEnum::IS_SETTLEMENT->value
+            UpdatePaymentStatus::run($payment, [
+                'status' => $payment->status
             ]);
-
-            event(new SendWebhookPaymentStatusEvent($payment));
         } else if(in_array($payment->channel, ['BNI', 'MANDIRI', 'PERMATA', 'BRI'])) {
             $request->merge([
                 'amount' => $payment->total,

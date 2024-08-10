@@ -24,7 +24,7 @@ class UpdatePaymentStatus
             ]);
 
             if($payment->status === PaymentStatusEnum::IS_SETTLEMENT->value) {
-                broadcast(new SendWebhookPaymentStatusEvent($payment))->toOthers();
+                event(new SendWebhookPaymentStatusEvent($payment));
             }
         }
 
