@@ -16,7 +16,7 @@ class UpdatePaymentStatus
 
     public function handle(Payment $payment, array $request): Payment
     {
-        if($payment->status === PaymentStatusEnum::IS_SETTLEMENT->value) {
+        if($payment->status === PaymentStatusEnum::IS_SETTLEMENT->value && $request['status'] === PaymentStatusEnum::IS_EXPIRE->value) {
             return $payment;
         }
 

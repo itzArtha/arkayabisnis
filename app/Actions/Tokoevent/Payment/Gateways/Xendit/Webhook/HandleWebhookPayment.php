@@ -73,6 +73,8 @@ class HandleWebhookPayment
                         array_merge($data, ['cancelled_at' => now()]);
                     }
 
+                    $payment->refresh();
+
                     if($payment->status !== PaymentStatusEnum::IS_SETTLEMENT->value) {
                         UpdatePaymentStatus::run($payment, $data);
 
