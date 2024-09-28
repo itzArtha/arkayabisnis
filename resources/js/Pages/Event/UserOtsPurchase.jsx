@@ -72,7 +72,6 @@ export default function Login({ots, tickets}) {
 
     const payment_methods = [
         { name: 'BNI', value: 'BNI' },
-        { name: 'Mandiri', value: 'MANDIRI' },
         { name: 'Permata', value: 'PERMATA' },
         { name: 'BRI', value: 'BRI' }
     ];
