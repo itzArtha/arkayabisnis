@@ -20,9 +20,9 @@ class StoreOtsCollateral
             $deposit = StoreOtsTopUp::run($ots, $request);
         }
 
-        if($request->type == 'transfer') {
-            $deposit = StoreOtsTransfer::run($ots, $request);
-        }
+//        if($request->type == 'transfer') {
+//            $deposit = StoreOtsTransfer::run($ots, $request);
+//        }
 
         return $deposit;
     }

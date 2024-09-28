@@ -18,7 +18,7 @@ export default function OtsHeader({ ots }) {
     const {data, setData, post, reset} = useForm({
         type: 'topup',
         amount: 0,
-        payment_method: 'MANDIRI'
+        payment_method: ''
     });
 
     const submit = (e) => {
@@ -55,14 +55,15 @@ export default function OtsHeader({ ots }) {
         }, 2000)
     }
 
-    const types = [
-        { name: 'Top Up', value: 'topup' },
-        { name: 'Transfer Penghasilan', value: 'transfer' }
+    const methods = [
+        { name: 'BRI', value: 'BRI' },
+        { name: 'BNI', value: 'BNI' },
+        { name: 'Permata', value: 'Permata' },
     ];
 
     function checkType()
     {
-        return types.filter((item) => item.value === data.type)[0].name;
+        return data.type;
     }
 
     function downloadImage(img)
@@ -124,9 +125,9 @@ export default function OtsHeader({ ots }) {
                 <div className={"flex justify-content-center"}>
                     <div className={"detail-buyer mb-4"}>
                         <div className={"mb-3"}>
-                            <p className="m-0">Tambahkan saldo jaminan dengan cara apa?</p>
+                            <p className="m-0">Tambahkan saldo jaminan dengan metode apa?</p>
                             <div className="mt-4 flex justify-content-center">
-                                <SelectButton className={"grid gap-2"} value={data.type} onChange={(e) => setData('type', e.value)} optionLabel="name" options={types} />
+                                <SelectButton className={"grid gap-2"} value={data.payment_method} onChange={(e) => setData('payment_method', e.value)} optionLabel="name" options={methods} />
                             </div>
                         </div>
                         <div className={"mb-3"}>
