@@ -22,7 +22,7 @@ class UpdateTransaction
         $payment->refresh();
 
         foreach($payment->transactions as $transaction) {
-            if(($transaction->status === PaymentStatusEnum::IS_SETTLEMENT->value)) {
+            if(($transaction->status === PaymentStatusEnum::IS_SETTLEMENT->value) && ($payment->channel !== PaymentMethodEnum::CASH->value)) {
                 $revenue = Revenue::create([
                     'transaction_id' => $transaction->id,
                     'organization_id' => $transaction->ticket->event->organizer_id,
@@ -31,7 +31,9 @@ class UpdateTransaction
                 ]);
 
                 $revenue->organization->organizer->deposit($transaction->subtotal);
+            }
 
+            if($transaction->status === PaymentStatusEnum::IS_SETTLEMENT->value) {
                 UpdateParticipant::run($transaction->participant, [
                     'status' => $payment->status
                 ]);
