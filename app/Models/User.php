@@ -112,7 +112,7 @@ class User extends Authenticatable
 
     public function event()
     {
-        return $this->hasOne(Event::class, 'organizer_id');
+        return $this->hasMany(Event::class, 'organizer_id');
     }
 
     public function payments()

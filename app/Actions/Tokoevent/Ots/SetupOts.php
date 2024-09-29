@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\Ots;
 use App\Models\User;
 use App\Rules\FieldOtsRule;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Lorisleiva\Actions\ActionRequest;
@@ -17,21 +18,20 @@ class SetupOts
 {
     use AsAction;
 
-    public function handle(ActionRequest $request): Ots
+    public function handle(Event $event, ActionRequest $request): Model
     {
-        /** @var User $user */
-        $user = $request->user();
-
-        return $user->event->ots()->updateOrCreate([
-            'id' => $user->event?->ots?->id
+        $event->ots()->updateOrCreate([
+            'id' => $event?->ots?->id
         ],[
-            'uuid' => $user->event->ots->uuid ?? Str::uuid(),
-            'organizer_id' => $user->organizer->id,
+            'uuid' => $event->ots->uuid ?? Str::uuid(),
+            'organizer_id' => $event->organizer_id,
             'status' => OtsStatusEnum::ACTIVE->value,
             'settings' => [
                 'fields' => $request->input('fields')
             ]
         ]);
+
+        return $event;
     }
 
     public function rules(): array
@@ -41,15 +41,15 @@ class SetupOts
         ];
     }
 
-    public function asController(ActionRequest $request): Ots
+    public function asController(Event $event, ActionRequest $request): Model
     {
         $request->validate();
 
-        return $this->handle($request);
+        return $this->handle($event, $request);
     }
 
-    public function htmlResponse(): Response
+    public function htmlResponse(Event $event): Response
     {
-        return Inertia::location(route('ots.index'));
+        return Inertia::location(route('ots.event.index', $event->slug));
     }
 }

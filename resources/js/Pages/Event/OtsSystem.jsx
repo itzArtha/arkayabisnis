@@ -20,7 +20,7 @@ export default function OtsSystem() {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('ots.store'))
+        post(route('ots.event.store', route().params))
     };
 
     const fields = [

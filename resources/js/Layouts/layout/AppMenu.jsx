@@ -1,22 +1,25 @@
 import React, { useContext } from 'react';
 import AppMenuitem from './AppMenuitem';
 import { MenuProvider } from './context/menucontext';
+import {usePage} from "@inertiajs/react";
 
 const AppMenu = () => {
 
+    const {events} = usePage().props;
+
+    let eventsRoute = [];
+
+    events.map((event) => {
+        eventsRoute.push({ label: event.title, icon: 'pi pi-fw pi-ticket', to: route('ots.event.index', event.slug) });
+    });
+
     const model = [
         {
-            label: 'Tokoevent',
-            items: [
-                // { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: route('dashboard') },
-                // { label: 'Peserta', value: 120, icon: 'pi pi-fw pi-users', to: route('participants.index') },
-                { label: 'OTS System', icon: 'pi pi-fw pi-dollar', to: route('ots.index') },
-                // { label: 'Keuangan', icon: 'pi pi-fw pi-credit-card', to: route('finance.index') },
-                // { label: 'Pengaturan Event', icon: 'pi pi-fw pi-cog', to: route('button') },
-            ]
+            label: 'Sistem OTS',
+            items: eventsRoute
         }
     ];
-    
+
 
     return (
         <MenuProvider>

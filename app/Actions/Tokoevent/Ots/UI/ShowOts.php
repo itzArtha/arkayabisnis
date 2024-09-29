@@ -16,9 +16,9 @@ class ShowOts
 {
     use AsAction;
 
-    public function handle(ActionRequest $request): Event
+    public function handle(Event $event): Event
     {
-        return $request->user()->event;
+        return $event;
     }
 
     public function htmlResponse(Event $event): Response
@@ -32,8 +32,8 @@ class ShowOts
         );
     }
 
-    public function asController(ActionRequest $request): Event
+    public function asController(Event $event): Event
     {
-        return $this->handle($request);
+        return $this->handle($event);
     }
 }

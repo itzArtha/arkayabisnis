@@ -8,7 +8,7 @@ import { Badge } from 'primereact/badge';
 
 
 const AppMenuitem = (props) => {
-    const pathname = route(route().current());
+    const pathname = route(route().current(), route().params);
     const searchParams = '';
     const { activeMenu, setActiveMenu } = useContext(MenuContext);
     const item = props.item;
