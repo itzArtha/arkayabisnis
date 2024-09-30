@@ -24,13 +24,12 @@ class StoreUser
 
     public function handle(array $attributes): User
     {
-        if(Arr::exists($attributes, 'email') or Arr::exists($attributes, 'phone')) {
-            $user = User::orWhere('email', Arr::get($attributes, 'email'))
-                ->orWhere('phone', Arr::get($attributes, 'phone'))->first();
+        if(Arr::exists($attributes, 'phone')) {
+            $user = User::where('phone', Arr::get($attributes, 'phone'))->first();
 
-                if($user) {   
+                if($user) {
                     $user->update(Arr::except($attributes, ['password']));
-                    
+
                     return $user->refresh();
                 }
         }

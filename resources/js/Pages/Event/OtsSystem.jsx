@@ -25,7 +25,6 @@ export default function OtsSystem() {
 
     const fields = [
         { name: 'Nama', value: 'name' },
-        { name: 'Email', value: 'email' },
         { name: 'No. WA', value: 'whatsapp' }
     ];
 

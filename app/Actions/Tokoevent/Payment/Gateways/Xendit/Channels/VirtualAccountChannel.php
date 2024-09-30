@@ -30,7 +30,7 @@ class VirtualAccountChannel
                 'virtual_account' => [
                     'channel_code' => $request->payment_method,
                     'channel_properties' => [
-                        'customer_name' => Str::substr($ots->organizer->parent['name'], 0, 10),
+                        'customer_name' => 'Tokoevent',
                         'expires_at' => now()->addMinutes(15)->toISOString()
                     ]
                 ]
