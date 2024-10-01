@@ -41,6 +41,7 @@ class StoreUser
     {
         return [
             'name' => ['nullable', 'string'],
+            'email' => ['required', 'string'],
             'phone' => ['required', 'integer'],
             'password' => ['required', 'string']
         ];
