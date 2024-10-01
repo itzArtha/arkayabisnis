@@ -73,7 +73,6 @@ class StoreOtsTransaction
     {
         return [
             'name' => ['sometimes', 'string'],
-            'email' => ['sometimes', 'email'],
             'whatsapp' => ['required', 'max:13'],
             'quantity' => ['sometimes', 'integer'],
             'ticket_id' => ['required', Rule::exists('tickets', 'id')],

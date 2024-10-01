@@ -41,7 +41,6 @@ class StoreUser
     {
         return [
             'name' => ['nullable', 'string'],
-            'email' => ['nullable', 'email'],
             'phone' => ['required', 'integer'],
             'password' => ['required', 'string']
         ];
@@ -52,8 +51,7 @@ class StoreUser
         $this->setRawAttributes([
             'name' => $request->input('name')
                 ?? 'ots buyer',
-            'email' => $request->input('email')
-                ?? Str::random(8).'-ots-buyer@tokoevent.id',
+            'email' => Str::random(8).'-ots-buyer@tokoevent.id',
             'phone' => Str::substr($request->input('whatsapp'), 1),
             'password' => Str::random(8)
         ]);

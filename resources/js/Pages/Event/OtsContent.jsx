@@ -140,7 +140,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                     </DataTable>
                     <Paginator first={payments.meta.from} rows={payments.meta.per_page} totalRecords={payments.meta.total} onPageChange={onPageChange} />
 
-                    <Dialog header="Pembelian OTS" draggable={false} position={"center"} visible={visible} className={"md:w-4 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
+                    <Dialog header="Pembelian OTS" draggable={false} position={"center"} visible={visible} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
                         <div className={"flex justify-content-center"}>
                             <div className={"detail-buyer"}>
                                 { ots.data?.fields?.map((item, key) => (
@@ -156,6 +156,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
                                             onChange={(e) => setData(item, e.target.value)}
                                         />
 
+                                    {item == 'whatsapp' && <InputError message={'Pastikan nomor wa pembeli benar, tiket hanya dikirim sekali'} />}
                                     {item !== 'name' && <InputError message={errors[item]} />}
                                 </div>
 

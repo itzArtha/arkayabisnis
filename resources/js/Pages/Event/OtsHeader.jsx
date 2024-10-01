@@ -1,4 +1,4 @@
-import {Link, Head, useForm, router} from '@inertiajs/react';
+import {Link, Head, useForm, router, usePage} from '@inertiajs/react';
 import React, {useContext, useState, useEffect} from "react";
 import {SelectButton} from "primereact/selectbutton";
 import {Dialog} from "primereact/dialog";
@@ -9,17 +9,22 @@ import FormatRupiah from "@/Components/FormatRupiah";
 import { Message } from 'primereact/message';
 import InputError from "@/Components/InputError.jsx";
 import toast from "react-hot-toast";
+import { Dropdown } from 'primereact/dropdown';
 
 export default function OtsHeader({ ots }) {
     const [visible, setVisible] = useState(false);
+    const [visibleWd, setVisibleWd] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [payment, setPayment] = useState({});
     const [errors, setErrors] = useState({});
     const {data, setData, post, reset} = useForm({
         type: 'topup',
         amount: 0,
-        payment_method: ''
+        payment_method: '',
+        bank_id: ''
     });
+
+    const {banks} = usePage().props;
 
     const submit = (e) => {
         e.preventDefault();
@@ -41,6 +46,29 @@ export default function OtsHeader({ ots }) {
 
         setProcessing(false);
     };
+
+    const withdraw = (e) => {
+        e.preventDefault();
+        setProcessing(true);
+
+        axios.post(route('ots.collateral.withdraw', {ots: ots.data.id}), data)
+        .then((response) => {
+            setPayment(response.data)
+            setErrors({});
+
+            toast.success(`Permintaan penarikan dana berhasil`);
+
+            setTimeout(() => {
+                if(payment.confirmed) {
+                    window.location.reload();
+                }
+            }, 2000)
+        }).catch((err) => {
+            setErrors(err.response.data.errors);
+        });
+
+        setProcessing(false);
+    }
 
     useEffect(() => {
         window.Echo.join(`topup-status.${ots.data.id}`)
@@ -83,18 +111,28 @@ export default function OtsHeader({ ots }) {
         </div>
     );
 
+    const footerContentWd = (
+        <div>
+            {data.type
+            && <PrimaryButton loading={processing} disabled={processing} onClick={withdraw} label={'Withdraw'} icon="pi pi-check" className={"w-full"} />
+            }
+        </div>
+    );
+
     return (
         <>
             <div className="grid mb-4">
                 <div className="col-12 xl:col-6">
                     <div className="card relative overflow-hidden">
                         <div className="z-2 relative text-white">
-                            <div className="text-xl text-900 font-semibold mb-3">Saldo Jaminan</div>
-                            <div className="text-2xl text-primary mb-5 font-bold">{<FormatRupiah amount={ots.data.collateral} />}</div>
-                            <div className="flex align-items-center justify-content-between"><span
-                                className="text-sm text-900 font-light">Khusus diperlukan untuk metode pembayaran cash</span><span
+                            <div className="text-xl text-900 font-semibold">Saldo Jaminan</div>
+                            <span className="text-sm text-900 font-light">Khusus diperlukan untuk metode pembayaran cash</span>
+                            <div className="mt-2 text-2xl text-primary mb-5 font-bold">{<FormatRupiah amount={ots.data.collateral} />}</div>
+                            <div className="md:flex align-items-center md:justify-content-between">
+                                <span
                                 className="font-medium text-lg">
-                                    <Button onClick={() => setVisible(true)} severity={"warning"} icon={"pi pi-arrow-up"} rounded />
+                                    <Button className='mt-4' onClick={() => setVisible(true)} severity={"warning"} label='Top Up' icon={"pi pi-arrow-up"} rounded />
+                                    <Button className='ml-2 mt-4' onClick={() => setVisibleWd(true)} severity={"warning"} label='Withdraw' icon={"pi pi-arrow-down"} rounded />
                                 </span></div>
                         </div>
                     </div>
@@ -123,7 +161,7 @@ export default function OtsHeader({ ots }) {
             </div>
             <Dialog header="Tambah Jaminan" draggable={false} visible={visible} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
                 <div className={"flex justify-content-center"}>
-                    <div className={"detail-buyer mb-4"}>
+                    <div className={"detail-buyer my-4"}>
                         <div className={"mb-3"}>
                             <p className="m-0">Tambahkan saldo jaminan dengan metode apa?</p>
                             <div className="mt-4 flex justify-content-center">
@@ -154,6 +192,29 @@ export default function OtsHeader({ ots }) {
                                 </div>}
                             </div>
                         </div>}
+                    </div>
+                </div>
+            </Dialog>
+
+            <Dialog header="Tarik Jaminan" draggable={false} visible={visibleWd} className={"md:w-3 w-full mx-2"} onHide={() => {if (!visibleWd) return; setVisibleWd(false); }} footer={footerContentWd}>
+                <div>
+                    <div className={"detail-buyer my-4"}>
+                        <div className={"mb-3"}>
+                        <label className="block text-900 font-medium my-2">Pilih rekening penerima</label>
+                                    <Dropdown value={data.bank_id} onChange={(e) => setData('bank_id', e.value)} options={banks} optionLabel="holder_name"
+                                              placeholder="Pilih rekening" className="w-full" />
+                                    <InputError message={errors?.bank_id} className=""/>
+                        </div>
+                        <div className={"mb-3"}>
+                            <label htmlFor={'currency-id'} className="block text-900 font-medium mb-2">Jumlah</label>
+                            <div>
+                                <InputNumber className={"w-full"} inputId="currency-id" value={data.amount} onValueChange={(e) => setData('amount', e.value)} mode="currency" currency="IDR" locale="id-ID" maxFractionDigits={0} />
+                                <InputError message={errors?.amount} className=""/>
+                            </div>
+                        </div>
+                        <div className={"mt-2 text-center"}>
+                            {payment.confirmed && <Message severity="success" text="Permintaan penarikan berhasil" />}
+                        </div>
                     </div>
                 </div>
             </Dialog>

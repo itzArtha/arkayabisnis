@@ -6,6 +6,7 @@ use App\Actions\Tokoevent\Ots\StoreOtsCollateral;
 use App\Actions\Tokoevent\Ots\StoreOtsTransaction;
 use App\Actions\Tokoevent\Ots\UI\ShowOts;
 use App\Actions\Tokoevent\Ots\UI\ShowUserOtsPurchase;
+use App\Actions\Tokoevent\Ots\WithdrawOtsCollateral;
 use App\Actions\Tokoevent\Participant\UI\ShowParticipant;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,7 @@ Route::get('/', ShowDashboard::class)->name('index');
 Route::get('{event:slug}', ShowOts::class)->name('event.index');
 Route::post('{event:slug}', SetupOts::class)->name('event.store');
 Route::post('{ots}/collateral', StoreOtsCollateral::class)->name('collateral.store');
+Route::post('{ots}/collateral/withdraw', WithdrawOtsCollateral::class)->name('collateral.withdraw');
 
 Route::withoutMiddleware(['auth', 'complete-register'])->group(function () {
     Route::post('{ots}/transaction', StoreOtsTransaction::class)->name('transaction.store');

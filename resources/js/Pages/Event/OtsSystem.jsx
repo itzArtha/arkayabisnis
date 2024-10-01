@@ -49,7 +49,7 @@ export default function OtsSystem() {
         <>
             <Layout>
                 <Head title="Sistem OTS" />
-                <div className={"card col-sm-12"}>
+                <div className={"col-sm-12"}>
                     {ots &&  <OtsHeader ots={ots} />}
                     {ots &&  <OtsContent ots={ots} tickets={tickets} setModalSettingVisible={(e) => setVisible(e)} />}
                     {!ots && <OtsWelcome setModalSettingVisible={(e) => setVisible(e)} />}

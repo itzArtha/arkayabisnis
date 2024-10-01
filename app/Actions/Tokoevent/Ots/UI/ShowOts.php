@@ -26,6 +26,7 @@ class ShowOts
         return Inertia::render('Event/OtsSystem',
             $event->ots ? [
                 'ots' => OtsResource::make($event->ots),
+                'banks' => [$event->owner->bank],
                 'tickets' => TicketsResource::collection($event->tickets),
                 'payments' => PaymentsResource::collection(IndexPayments::run($event->ots))
             ] : []
