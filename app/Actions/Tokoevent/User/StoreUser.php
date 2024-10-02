@@ -24,6 +24,8 @@ class StoreUser
 
     public function handle(array $attributes): User
     {
+        data_set($attributes, 'roles', 1);
+
         if(Arr::exists($attributes, 'phone')) {
             $user = User::where('phone', Arr::get($attributes, 'phone'))->first();
 
