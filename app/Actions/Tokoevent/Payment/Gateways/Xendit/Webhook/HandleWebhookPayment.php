@@ -2,17 +2,14 @@
 
 namespace App\Actions\Tokoevent\Payment\Gateways\Xendit\Webhook;
 
-use App\Actions\Tokoevent\Payment\UpdatePayment;
 use App\Actions\Tokoevent\Payment\UpdatePaymentStatus;
 use App\Enums\PaymentStatusEnum;
-use App\Events\SendWebhookPaymentStatusEvent;
 use App\Events\SendWebhookTopupStatusEvent;
 use App\Models\Payment;
-use App\Notifications\SendTicketToBuyerNotification;
 use Bavix\Wallet\Models\Transaction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Lorisleiva\Actions\AcionRequest;
+use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class HandleWebhookPayment
