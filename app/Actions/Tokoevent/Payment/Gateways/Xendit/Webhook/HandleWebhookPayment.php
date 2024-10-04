@@ -12,7 +12,8 @@ use App\Notifications\SendTicketToBuyerNotification;
 use Bavix\Wallet\Models\Transaction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Lorisleiva\Actions\ActionRequest;
+use Illuminate\Support\Arr;
+use Lorisleiva\Actions\AcionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class HandleWebhookPayment
@@ -44,7 +45,12 @@ class HandleWebhookPayment
                 $payment = Payment::where('reference_id', $referenceId)->first();
 
                 if(!$payment) {
-                    $referenceId = Arr::get($attributes, 'payment_method')['reference_id'];
+                    if(in_array(Arr::get($attributes, 'status'), ['PAID', 'SUCCEEDED'])) {
+                        $referenceId = Arr::get($attributes, 'payment_method')['reference_id'];
+                    } else {
+                        $referenceId = Arr::get($attributes, 'reference_id');
+                    }
+
                     $payment = Transaction::where('uuid', $referenceId)->first();
 
                     if($payment) {
