@@ -62,6 +62,10 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
         toast.success(`Pembayaran sebesar ${paymentWebhook.total} berhasil`);
 
         setPayment(paymentWebhook);
+                
+        setTimeout(() => {
+            reset();
+        }, 2000)
     }
 
     const onPageChange = (event) => {

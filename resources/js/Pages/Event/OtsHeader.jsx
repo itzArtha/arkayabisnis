@@ -71,7 +71,7 @@ export default function OtsHeader({ ots }) {
     }
 
     useEffect(() => {
-        window.Echo.join(`topup-status.${ots.data.id}`)
+        const subscribed = window.Echo.join(`topup-status.${ots.data.id}`)
             .listen('.SendWebhookTopupStatusEvent', (e) => onUpdateWebhook(e));
     }, []);
 
@@ -79,7 +79,7 @@ export default function OtsHeader({ ots }) {
         toast.success(`Topup berhasil`);
 
         setTimeout(() => {
-            window.location.href = route('ots.index');
+            window.location.href = route('ots.event.index', route().params);
         }, 2000)
     }
 
