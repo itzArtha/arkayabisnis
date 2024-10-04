@@ -12,7 +12,6 @@ use App\Notifications\SendTicketToBuyerNotification;
 use Bavix\Wallet\Models\Transaction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Arr;
 use Lorisleiva\Actions\AcionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
