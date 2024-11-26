@@ -70,6 +70,7 @@ export default function OtsContent({ ots, tickets, setModalSettingVisible }) {
 
     const onPageChange = (event) => {
         router.visit(route(route().current(), {
+            event: route().params['event'],
             page: event.page + 1
         }), { preserveScroll: true })
     };

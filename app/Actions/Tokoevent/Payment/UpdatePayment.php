@@ -28,9 +28,9 @@ class UpdatePayment
                 ]
             ]);
         } else if($payment->channel === PaymentMethodEnum::CASH->value) {
-            $ots->withdraw($payment->total, [
+            $ots->withdraw($payment->convience_fee, [
                 'reference_id' => $payment->reference_id,
-                'description' => 'Payment for ' . $payment->user->name
+                'description' => 'Admin fee for payment ' . $payment->id
             ]);
 
             UpdatePaymentStatus::run($payment, [

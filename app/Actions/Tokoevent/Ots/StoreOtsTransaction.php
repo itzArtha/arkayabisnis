@@ -74,7 +74,7 @@ class StoreOtsTransaction
         return [
             'name' => ['sometimes', 'string'],
             'whatsapp' => ['required', 'max:13'],
-            'quantity' => ['sometimes', 'integer'],
+            'quantity' => ['sometimes', 'integer', 'min:1'],
             'ticket_id' => ['required', Rule::exists('tickets', 'id')],
             'event_id' => ['required', Rule::exists('events', 'id')],
             'payment_methods' => ['required', Rule::enum(PaymentMethodEnum::class)]
